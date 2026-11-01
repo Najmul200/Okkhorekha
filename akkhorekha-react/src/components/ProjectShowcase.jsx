@@ -17,6 +17,11 @@ export default function ProjectShowcase({
   const suppressClick = useRef(false);
   const galleryImages = [...new Set(images.filter(Boolean))].slice(0, 6);
   const contentOnLeft = index % 2 === 0;
+  const previousImage = (activeImage - 1 + galleryImages.length) % galleryImages.length;
+  const nextImage = (activeImage + 1) % galleryImages.length;
+  const visibleImages = galleryImages.length > 2
+    ? [previousImage, activeImage, nextImage]
+    : galleryImages.map((_, imageIndex) => imageIndex);
 
   useEffect(() => {
     if (galleryImages.length < 2 || isGalleryPaused || lightboxIndex !== null) return undefined;
@@ -94,7 +99,7 @@ export default function ProjectShowcase({
   const gallery = (
     <div
       data-timeline-gallery
-      className="relative z-10 col-start-2 row-start-2 h-[18rem] min-w-0 overflow-hidden rounded-xl bg-[#d7d7d7] md:col-span-2 md:col-start-2 md:h-[22rem]"
+      className="relative z-10 col-start-2 row-start-2 h-[25rem] min-w-0 overflow-hidden rounded-xl bg-[#d7d7d7] md:col-span-2 md:col-start-2 md:h-[30rem]"
       onMouseEnter={() => setIsGalleryPaused(true)}
       onMouseLeave={() => setIsGalleryPaused(false)}
       onFocusCapture={() => setIsGalleryPaused(true)}
@@ -119,34 +124,64 @@ export default function ProjectShowcase({
       }}
       aria-label={`${title} image gallery`}
     >
-      <button
-        type="button"
-        aria-label={`Open ${title} image ${activeImage + 1} of ${galleryImages.length} in slideshow`}
-        onClick={() => {
-          if (suppressClick.current) {
-            suppressClick.current = false;
-            return;
-          }
-          setLightboxIndex(activeImage);
-        }}
-        className="absolute inset-0 z-0 block h-full w-full cursor-zoom-in text-left focus-visible:outline-2 focus-visible:outline-offset-[-4px] focus-visible:outline-white"
-      >
-        <AnimatePresence mode="wait">
-          <motion.img
-            key={galleryImages[activeImage]}
-            src={galleryImages[activeImage]}
-            alt={`${title} project view ${activeImage + 1}`}
-            loading={activeImage === 0 ? 'eager' : 'lazy'}
-            initial={{ opacity: 0, x: 24, scale: 1.02 }}
-            animate={{ opacity: 1, x: 0, scale: 1 }}
-            exit={{ opacity: 0, x: -24 }}
-            transition={{ duration: 0.45, ease: 'easeInOut' }}
-            draggable="false"
-            className="h-full w-full object-cover"
-          />
+      <div className="absolute inset-0 overflow-hidden pb-10 [perspective:1200px]">
+        <AnimatePresence initial={false}>
+          {visibleImages.map((imageIndex) => {
+            const position = imageIndex === activeImage
+              ? 'center'
+              : imageIndex === previousImage
+                ? 'left'
+                : 'right';
+            const positionStyles = {
+              center: { x: '0%', scale: 1, rotateY: 0, opacity: 1, zIndex: 20 },
+              left: { x: '-72%', scale: 0.72, rotateY: 12, opacity: 0.58, zIndex: 10 },
+              right: { x: '72%', scale: 0.72, rotateY: -12, opacity: 0.58, zIndex: 10 },
+            };
+
+            return (
+              <motion.button
+                key={imageIndex}
+                type="button"
+                aria-label={`${position === 'center' ? 'Open' : `Show ${position}`} ${title} image ${imageIndex + 1} of ${galleryImages.length}`}
+                aria-current={position === 'center' ? 'true' : undefined}
+                initial={false}
+                animate={positionStyles[position]}
+                exit={{ opacity: 0, scale: 0.65, x: position === 'left' ? '-90%' : '90%' }}
+                transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                onClick={() => {
+                  if (suppressClick.current) {
+                    suppressClick.current = false;
+                    return;
+                  }
+                  if (position === 'center') {
+                    setLightboxIndex(imageIndex);
+                  } else {
+                    setActiveImage(imageIndex);
+                  }
+                }}
+                className={`absolute left-1/2 top-1/2 h-[84%] w-[68%] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-xl border border-white/30 bg-black/10 shadow-2xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white ${
+                  position === 'center' ? 'cursor-zoom-in' : 'cursor-pointer'
+                }`}
+                style={{ transformStyle: 'preserve-3d' }}
+              >
+                <img
+                  src={galleryImages[imageIndex]}
+                  alt={`${title} project view ${imageIndex + 1}`}
+                  loading={imageIndex < 3 ? 'eager' : 'lazy'}
+                  draggable="false"
+                  className="h-full w-full object-cover"
+                />
+                <span
+                  className={`pointer-events-none absolute inset-0 transition-colors duration-500 ${
+                    position === 'center' ? 'bg-transparent' : 'bg-black/25'
+                  }`}
+                  aria-hidden="true"
+                />
+              </motion.button>
+            );
+          })}
         </AnimatePresence>
-        <span className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-black/10" aria-hidden="true" />
-      </button>
+      </div>
 
       <div className="pointer-events-none absolute inset-x-4 bottom-4 z-10 flex items-end justify-between gap-3 text-white md:inset-x-5 md:bottom-5">
         <span className="text-xs font-medium uppercase tracking-[0.15em] md:text-sm">
