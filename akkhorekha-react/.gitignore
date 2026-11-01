@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.env
+.env.*
+!.env.example
+server/.env
+server/.env.*
+!server/.env.example
+src/assets/projects-optimized/
+public/portfolio-cover.webp
