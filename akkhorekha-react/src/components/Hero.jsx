@@ -9,36 +9,45 @@ const featuredProjectConfig = [
   {
     folder: 'MOHAKHALI DOHS',
     title: 'Mosque',
+    category: 'religious',
+    categoryAnchor: true,
     description:
       'A contemporary sacred architecture project in Dhaka designed around the interplay of natural light and shadow, creating a serene atmosphere.',
   },
   {
     folder: 'bashundhara',
     title: 'Residential',
+    category: 'residential',
+    categoryAnchor: true,
     description:
       'A contemporary residential project in Dhaka, designed to combine practical living with thoughtful architectural details.',
   },
   {
     folder: 'kitchen d5',
     title: 'Interior Design',
+    category: 'commercial',
+    categoryAnchor: true,
     description:
       'A carefully composed interior that balances material, light, and practical everyday use.',
   },
   {
     folder: 'khilkhet full unit',
     title: 'Architecture',
+    category: 'residential',
     description:
       'A residential architecture project shaped by clear planning and thoughtful details.',
   },
   {
     folder: 'duplex reading',
     title: 'House Interior',
+    category: 'residential',
     description:
       'A warm home interior designed around comfort, natural textures, and quiet moments.',
   },
   {
     folder: 'Advocate',
     title: 'Office Interior',
+    category: 'commercial',
     description:
       'A professional interior focused on a calm atmosphere, purposeful details, and everyday functionality.',
     imageStart: 0,
@@ -47,6 +56,7 @@ const featuredProjectConfig = [
   {
     folder: 'Advocate',
     title: 'Advocate Interior',
+    category: 'commercial',
     description:
       'An advocate’s interior space bringing together a welcoming character and considered design.',
     imageStart: 6,
@@ -63,6 +73,7 @@ const featuredProjects = featuredProjectConfig.flatMap((item) => {
   return [{
     ...item,
     project,
+    sectionId: item.categoryAnchor ? `project-${item.category}` : undefined,
     images: [...new Set([
       ...(item.imageStart === 6 ? [] : [project.cover]),
       ...projectImages,
@@ -171,11 +182,12 @@ export default function Hero() {
       frame = requestAnimationFrame(() => {
         const bounds = container.getBoundingClientRect();
         const viewportHeight = window.innerHeight;
-        const end = bounds.top + window.scrollY
-          + Math.max(bounds.height - viewportHeight, bounds.height * 0.25);
+        const documentTop = bounds.top + window.scrollY;
+        const start = documentTop - viewportHeight * 0.65;
+        const end = documentTop + bounds.height - viewportHeight * 0.3;
         const progress = Math.max(
           0,
-          Math.min(1, window.scrollY / end)
+          Math.min(1, (window.scrollY - start) / Math.max(end - start, 1))
         );
         let remainingLength = totalLength * progress;
 
@@ -203,44 +215,40 @@ export default function Hero() {
     <section className="bg-[#f4f3f1] text-[#111111]">
       <div className="mx-auto w-[min(1240px,calc(100%-3rem))] pb-14 pt-10 max-[700px]:w-[calc(100%-1.5rem)] max-[700px]:pb-10 max-[700px]:pt-8">
         <div className="flex flex-col items-center justify-center pt-8 text-center">
-          <h1 className="max-w-[950px] text-[clamp(2rem,4.8vw,4.5rem)] font-medium leading-[1.08] tracking-[-0.045em] text-black">
-            {[
-              ['Spaces', 'shaped', 'by', 'thought.'],
-              ['Defined', 'by', 'purpose.'],
-            ].map((line, lineIndex) => {
-              const wordOffset = lineIndex === 0 ? 0 : 4;
-
-              return (
-                <span key={lineIndex} className={`block ${lineIndex === 1 ? 'mt-1' : ''}`}>
-                  {line.map((word, wordIndex) => (
-                    <span key={word}>
-                      <motion.span
-                        className="inline-block"
-                        initial={{ opacity: 0, y: 14 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{
-                          duration: 0.45,
-                          delay: (wordOffset + wordIndex) * 0.12,
-                          ease: 'easeOut',
-                        }}
-                      >
-                        {word}
-                      </motion.span>
-                      {wordIndex < line.length - 1 ? ' ' : ''}
-                    </span>
-                  ))}
-                </span>
-              );
-            })}
+          <h1 className="inline-block w-fit max-w-full text-3xl font-medium leading-[1.08] tracking-[-0.045em] text-black md:text-4xl">
+            <span className="block overflow-hidden pb-1">
+              <motion.span
+                className="block"
+                initial={{ opacity: 0, y: '110%' }}
+                animate={{ opacity: 1, y: '0%' }}
+                transition={{ duration: 1, delay: 2, ease: [0.16, 1, 0.3, 1] }}
+              >
+                Spaces shaped by thought.
+              </motion.span>
+            </span>
+            <span className="mt-1 block overflow-hidden pb-1">
+              <motion.span
+                className="block"
+                initial={{ opacity: 0, y: '110%' }}
+                animate={{ opacity: 1, y: '0%' }}
+                transition={{ duration: 1, delay: 2.25, ease: [0.16, 1, 0.3, 1] }}
+              >
+                Defined by purpose.
+              </motion.span>
+            </span>
+            <motion.span
+              aria-hidden="true"
+              className="mt-3 block h-[2px] w-full origin-left bg-[#d87946]"
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ duration: 2, ease: [0.22, 1, 0.3, 1] }}
+            />
           </h1>
-          <motion.p
+          <p
             className="mt-6 text-[0.68rem] font-medium uppercase tracking-[0.3em] text-black/50"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.45, ease: 'easeOut' }}
           >
             Architecture · Interior · Landscape
-          </motion.p>
+          </p>
         </div>
 
         <div className="mt-10 flex items-center justify-center">
@@ -272,7 +280,7 @@ export default function Hero() {
             ))}
           </svg>
           <div className="space-y-4 pl-0 md:space-y-0">
-            {featuredProjects.map(({ project, title, description, images }, index) => (
+            {featuredProjects.map(({ project, title, description, images, sectionId }, index) => (
               <ProjectShowcase
                 key={`${project.folder}-${title}`}
                 title={title}
@@ -280,6 +288,8 @@ export default function Hero() {
                 description={description}
                 images={images}
                 index={index}
+                sectionId={sectionId}
+                projectListAnchor={index === 0}
               />
             ))}
           </div>

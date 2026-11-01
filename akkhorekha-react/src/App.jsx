@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { useEffect, useRef } from 'react';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import Header from './components/Header.jsx';
 import Footer from './components/Footer.jsx';
 import Home from './pages/Home.jsx';
@@ -13,11 +13,24 @@ import SocialContactLinks from './components/SocialContactLinks.jsx';
 // Page change hole upore jabe, #hash thakle sei section e jabe
 function ScrollManager() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const handledInitialLoad = useRef(false);
+
   useEffect(() => {
+    if (!handledInitialLoad.current) {
+      handledInitialLoad.current = true;
+      const navigation = performance.getEntriesByType('navigation')[0];
+
+      if (navigation?.type === 'reload' && (location.pathname !== '/' || location.hash)) {
+        navigate('/', { replace: true });
+        return;
+      }
+    }
+
     if (location.hash) {
       const el = document.querySelector(location.hash);
       if (el) {
-        el.scrollIntoView();
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
         return;
       }
     }
