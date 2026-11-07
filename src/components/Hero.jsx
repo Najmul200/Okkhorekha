@@ -259,7 +259,7 @@ export default function Hero() {
   }, [timeline]);
 
   return (
-    <section className="bg-[#f4f3f1] text-[#111111]">
+    <section className="bg-[#f4f3f1] text-[#111]">
       <div className="mx-auto w-[min(1240px,calc(100%-3rem))] pb-14 pt-10 max-[700px]:w-[calc(100%-1.5rem)] max-[700px]:pb-10 max-[700px]:pt-8">
         <div className="flex flex-col items-center justify-center pt-8 text-center">
           <h1 className="inline-block w-fit max-w-full text-3xl font-medium leading-[1.08] tracking-[-0.045em] text-black md:text-4xl">
@@ -285,7 +285,7 @@ export default function Hero() {
             </span>
             <motion.span
               aria-hidden="true"
-              className="mt-3 block h-[2px] w-full origin-left bg-[#d87946]"
+              className="mt-3 block h-0.5 w-full origin-left bg-[#d87946]"
               initial={{ scaleX: 0 }}
               animate={{ scaleX: 1 }}
               transition={{ duration: 2, ease: [0.22, 1, 0.3, 1] }}
@@ -304,7 +304,7 @@ export default function Hero() {
           </span>
         </div>
 
-        <div ref={timelineRef} className="relative mx-auto mt-10 max-w-[1080px]">
+        <div ref={timelineRef} className="relative mx-auto mt-10 max-w-270">
           <svg
             className="pointer-events-none absolute inset-0 z-0 h-full w-full overflow-visible"
             viewBox={`0 0 ${timeline.width} ${timeline.height}`}

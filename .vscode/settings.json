@@ -1,3 +1,16 @@
 {
-  "css.lint.unknownAtRules": "ignore"
+  "css.lint.unknownAtRules": "ignore",
+  "cSpell.words": [
+    "bashundhara",
+    "dohs",
+    "khilkhet",
+    "mohakhali",
+    "supabase",
+    "thakle",
+    "upore",
+    "jabe"
+  ],
+  "cSpell.ignorePaths": [
+    "src/lib/supabase.js"
+  ]
 }

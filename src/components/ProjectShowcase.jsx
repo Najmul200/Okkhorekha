@@ -128,7 +128,7 @@ export default function ProjectShowcase({
     <div
       ref={galleryRef}
       data-timeline-gallery
-      className="relative z-10 col-start-2 row-start-2 h-[25rem] min-w-0 overflow-hidden rounded-xl bg-[#d7d7d7] md:col-span-2 md:col-start-2 md:h-[30rem]"
+      className="relative z-10 col-start-2 row-start-2 h-100 min-w-0 overflow-hidden rounded-xl bg-[#d7d7d7] md:col-span-2 md:col-start-2 md:h-120"
       onMouseEnter={() => setIsGalleryPaused(true)}
       onMouseLeave={() => setIsGalleryPaused(false)}
       onFocusCapture={() => setIsGalleryPaused(true)}
@@ -153,7 +153,7 @@ export default function ProjectShowcase({
       }}
       aria-label={`${title} image gallery`}
     >
-      <div className="absolute inset-0 overflow-hidden pb-10 [perspective:1200px]">
+      <div className="absolute inset-0 overflow-hidden pb-10 perspective-distant">
         <AnimatePresence initial={false}>
           {visibleImages.map((imageIndex) => {
             const position = imageIndex === activeImage
@@ -283,7 +283,7 @@ export default function ProjectShowcase({
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.6, ease: 'easeOut' }}
-            className="col-start-2 row-start-3 mt-4 max-w-[42rem] pb-2"
+            className="col-start-2 row-start-3 mt-4 max-w-2xl pb-2"
           >
             <p data-timeline-description className="text-sm leading-7 text-black/60">
               {description}
@@ -292,7 +292,7 @@ export default function ProjectShowcase({
         )}
         {lightboxIndex !== null && (
         <div
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 p-4 text-white backdrop-blur-sm md:p-10"
+          className="fixed inset-0 z-100 flex items-center justify-center bg-black/95 p-4 text-white backdrop-blur-sm md:p-10"
           role="dialog"
           aria-modal="true"
           aria-label={`${title} image slideshow`}
