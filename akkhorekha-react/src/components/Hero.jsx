@@ -83,7 +83,13 @@ const featuredProjects = featuredProjectConfig.flatMap((item) => {
 
 export default function Hero() {
   const timelineRef = useRef(null);
-  const [timeline, setTimeline] = useState({ segments: [], width: 0, height: 0 });
+  const [timeline, setTimeline] = useState({
+    segments: [],
+    width: 0,
+    height: 0,
+    startY: 0,
+    endY: 0,
+  });
 
   useLayoutEffect(() => {
     const container = timelineRef.current;
@@ -120,7 +126,7 @@ export default function Hero() {
       }).filter(Boolean);
 
       if (points.length === 0) {
-        setTimeline({ segments: [], width, height });
+        setTimeline({ segments: [], width, height, startY: 0, endY: 0 });
         return;
       }
 
@@ -153,7 +159,13 @@ export default function Hero() {
         addSegment('vertical', next.trackX, gapY, next.trackX, next.y);
         addSegment('horizontal', next.trackX, next.y, next.x, next.y);
       });
-      setTimeline({ segments, width, height });
+      setTimeline({
+        segments,
+        width,
+        height,
+        startY: points[0].y,
+        endY: points[points.length - 1].contentBottom + 14,
+      });
     };
 
     updateTimeline();
@@ -176,28 +188,63 @@ export default function Hero() {
 
     const totalLength = timeline.segments.reduce((total, segment) => total + segment.length, 0);
     let frame = 0;
+    let currentProgress = 0;
+    let targetProgress = 0;
+    let previousTime = 0;
+    let initialized = false;
+
+    const drawProgress = (progress) => {
+      let remainingLength = totalLength * progress;
+
+      container.querySelectorAll('[data-timeline-segment]').forEach((path, index) => {
+        const segment = timeline.segments[index];
+        const drawnLength = Math.max(0, Math.min(segment.length, remainingLength));
+        path.style.strokeDashoffset = String(segment.length - drawnLength);
+        remainingLength -= drawnLength;
+      });
+    };
+
+    const animateProgress = (time) => {
+      frame = 0;
+      const elapsed = previousTime ? Math.min(time - previousTime, 64) : 16;
+      previousTime = time;
+      const easing = 1 - Math.exp(-elapsed / 220);
+      currentProgress += (targetProgress - currentProgress) * easing;
+
+      if (Math.abs(targetProgress - currentProgress) < 0.0005) {
+        currentProgress = targetProgress;
+      }
+      drawProgress(currentProgress);
+
+      if (currentProgress !== targetProgress) {
+        frame = requestAnimationFrame(animateProgress);
+      } else {
+        previousTime = 0;
+      }
+    };
 
     const updateProgress = () => {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => {
-        const bounds = container.getBoundingClientRect();
-        const viewportHeight = window.innerHeight;
-        const documentTop = bounds.top + window.scrollY;
-        const start = documentTop - viewportHeight * 0.65;
-        const end = documentTop + bounds.height - viewportHeight * 0.3;
-        const progress = Math.max(
-          0,
-          Math.min(1, (window.scrollY - start) / Math.max(end - start, 1))
-        );
-        let remainingLength = totalLength * progress;
+      const bounds = container.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+      const documentTop = bounds.top + window.scrollY;
+      const start = documentTop + timeline.startY - viewportHeight * 0.7;
+      const end = documentTop + timeline.endY - viewportHeight * 0.88;
+      targetProgress = Math.max(
+        0,
+        Math.min(1, (window.scrollY - start) / Math.max(end - start, 1))
+      );
 
-        container.querySelectorAll('[data-timeline-segment]').forEach((path, index) => {
-          const segment = timeline.segments[index];
-          const drawnLength = Math.max(0, Math.min(segment.length, remainingLength));
-          path.style.strokeDashoffset = String(segment.length - drawnLength);
-          remainingLength -= drawnLength;
-        });
-      });
+      if (!initialized || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        cancelAnimationFrame(frame);
+        frame = 0;
+        previousTime = 0;
+        initialized = true;
+        currentProgress = targetProgress;
+        drawProgress(currentProgress);
+        return;
+      }
+
+      if (!frame) frame = requestAnimationFrame(animateProgress);
     };
 
     updateProgress();

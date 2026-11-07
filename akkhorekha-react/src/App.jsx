@@ -9,6 +9,7 @@ import ProjectPage from './pages/ProjectPage.jsx';
 import NotFound from './pages/NotFound.jsx';
 import Contact from './components/Contact.jsx';
 import SocialContactLinks from './components/SocialContactLinks.jsx';
+import AdminDashboard from './pages/AdminDashboard.jsx';
 
 // Page change hole upore jabe, #hash thakle sei section e jabe
 function ScrollManager() {
@@ -97,6 +98,7 @@ export default function App() {
         <Route path="/contact" element={<main className="min-h-[60vh] bg-paper py-8 pb-16"><Contact /></main>} />
         <Route path="/projects/:category" element={<CategoryPage />} />
         <Route path="/projects/:category/:project" element={<ProjectPage />} />
+        <Route path="/admin" element={<AdminDashboard />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />

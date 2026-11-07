@@ -13,6 +13,8 @@ export default function ProjectShowcase({
   const [activeImage, setActiveImage] = useState(0);
   const [lightboxIndex, setLightboxIndex] = useState(null);
   const [isGalleryPaused, setIsGalleryPaused] = useState(false);
+  const [isGalleryInView, setIsGalleryInView] = useState(false);
+  const galleryRef = useRef(null);
   const touchStartX = useRef(null);
   const suppressClick = useRef(false);
   const galleryImages = [...new Set(images.filter(Boolean))].slice(0, 6);
@@ -24,14 +26,40 @@ export default function ProjectShowcase({
     : galleryImages.map((_, imageIndex) => imageIndex);
 
   useEffect(() => {
-    if (galleryImages.length < 2 || isGalleryPaused || lightboxIndex !== null) return undefined;
+    if (galleryImages.length < 2 || !isGalleryInView || isGalleryPaused || lightboxIndex !== null) return undefined;
 
     const interval = window.setInterval(() => {
       setActiveImage((current) => (current + 1) % galleryImages.length);
     }, 3000);
 
     return () => window.clearInterval(interval);
-  }, [galleryImages.length, isGalleryPaused, lightboxIndex]);
+  }, [galleryImages.length, isGalleryInView, isGalleryPaused, lightboxIndex]);
+
+  useEffect(() => {
+    const gallery = galleryRef.current;
+    if (!gallery) return undefined;
+
+    let observer;
+    const observeGalleryCenter = () => {
+      observer?.disconnect();
+      const center = window.innerHeight / 2;
+      observer = new IntersectionObserver(
+        ([entry]) => setIsGalleryInView(entry.isIntersecting),
+        {
+          rootMargin: `-${Math.max(center - 1, 0)}px 0px -${center}px 0px`,
+          threshold: 0,
+        }
+      );
+      observer.observe(gallery);
+    };
+
+    observeGalleryCenter();
+    window.addEventListener('resize', observeGalleryCenter);
+    return () => {
+      observer?.disconnect();
+      window.removeEventListener('resize', observeGalleryCenter);
+    };
+  }, []);
 
   useEffect(() => {
     if (lightboxIndex === null) return undefined;
@@ -98,6 +126,7 @@ export default function ProjectShowcase({
 
   const gallery = (
     <div
+      ref={galleryRef}
       data-timeline-gallery
       className="relative z-10 col-start-2 row-start-2 h-[25rem] min-w-0 overflow-hidden rounded-xl bg-[#d7d7d7] md:col-span-2 md:col-start-2 md:h-[30rem]"
       onMouseEnter={() => setIsGalleryPaused(true)}
