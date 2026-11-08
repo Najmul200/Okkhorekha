@@ -1,8 +1,7 @@
 export const SITE = {
   name: 'অক্ষরেখা',
-  address: 'House 9/4, Block D, Lalmatia, Dhaka',
-  phone: '01786769966',
-  phoneHref: 'tel:+8801786769966',
+  phone: '01774750911',
+  phoneHref: '+8801774750911',
   whatsapp: '01774750911',
   email: 'akkhorekhaarchitects@gmail.com',
 };

@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { CATEGORIES } from '../data/projects.js';
 import ProjectShowcase from './ProjectShowcase.jsx';
 
@@ -82,6 +82,7 @@ const featuredProjects = featuredProjectConfig.flatMap((item) => {
 });
 
 export default function Hero() {
+  const reduceMotion = useReducedMotion();
   const timelineRef = useRef(null);
   const [timeline, setTimeline] = useState({
     segments: [],
@@ -227,8 +228,8 @@ export default function Hero() {
       const bounds = container.getBoundingClientRect();
       const viewportHeight = window.innerHeight;
       const documentTop = bounds.top + window.scrollY;
-      const start = documentTop + timeline.startY - viewportHeight * 0.7;
-      const end = documentTop + timeline.endY - viewportHeight * 0.88;
+      const start = Math.max(0, documentTop + timeline.startY - viewportHeight * 0.7);
+      const end = documentTop + timeline.endY - viewportHeight * 0.96;
       targetProgress = Math.max(
         0,
         Math.min(1, (window.scrollY - start) / Math.max(end - start, 1))
@@ -266,21 +267,85 @@ export default function Hero() {
             <span className="block overflow-hidden pb-1">
               <motion.span
                 className="block"
-                initial={{ opacity: 0, y: '110%' }}
-                animate={{ opacity: 1, y: '0%' }}
-                transition={{ duration: 1, delay: 2, ease: [0.16, 1, 0.3, 1] }}
+                initial={reduceMotion ? false : {
+                  opacity: 0,
+                  y: '110%',
+                  textShadow: '0 0 0 rgba(216, 121, 70, 0)',
+                }}
+                animate={{
+                  opacity: 1,
+                  y: '0%',
+                  textShadow: reduceMotion
+                    ? '0 0 0 rgba(216, 121, 70, 0)'
+                    : ['0 0 0 rgba(216, 121, 70, 0)', '0 0 10px rgba(216, 121, 70, 0.24)'],
+                }}
+                whileHover={reduceMotion ? undefined : { y: -3, color: '#b95e32' }}
+                transition={{
+                  opacity: { duration: 0.55, delay: 0.05 },
+                  y: { duration: 0.65, delay: 0.05, ease: [0.16, 1, 0.3, 1] },
+                  textShadow: {
+                    duration: 2.8,
+                    delay: 0.85,
+                    repeat: Infinity,
+                    repeatType: 'reverse',
+                    ease: 'easeInOut',
+                  },
+                }}
               >
-                Spaces shaped by thought.
+                <motion.span
+                  className="block"
+                  animate={reduceMotion ? undefined : { y: [0, -2, 0] }}
+                  transition={{
+                    duration: 2.2,
+                    delay: 0.8,
+                    repeat: Infinity,
+                    ease: 'easeInOut',
+                  }}
+                >
+                  Spaces shaped by thought.
+                </motion.span>
               </motion.span>
             </span>
             <span className="mt-1 block overflow-hidden pb-1">
               <motion.span
                 className="block"
-                initial={{ opacity: 0, y: '110%' }}
-                animate={{ opacity: 1, y: '0%' }}
-                transition={{ duration: 1, delay: 2.25, ease: [0.16, 1, 0.3, 1] }}
+                initial={reduceMotion ? false : {
+                  opacity: 0,
+                  y: '110%',
+                  textShadow: '0 0 0 rgba(216, 121, 70, 0)',
+                }}
+                animate={{
+                  opacity: 1,
+                  y: '0%',
+                  textShadow: reduceMotion
+                    ? '0 0 0 rgba(216, 121, 70, 0)'
+                    : ['0 0 0 rgba(216, 121, 70, 0)', '0 0 10px rgba(216, 121, 70, 0.24)'],
+                }}
+                whileHover={reduceMotion ? undefined : { y: -3, color: '#b95e32' }}
+                transition={{
+                  opacity: { duration: 0.55, delay: 0.22 },
+                  y: { duration: 0.65, delay: 0.22, ease: [0.16, 1, 0.3, 1] },
+                  textShadow: {
+                    duration: 2.8,
+                    delay: 1.02,
+                    repeat: Infinity,
+                    repeatType: 'reverse',
+                    ease: 'easeInOut',
+                  },
+                }}
               >
-                Defined by purpose.
+                <motion.span
+                  className="block"
+                  animate={reduceMotion ? undefined : { y: [0, -2, 0] }}
+                  transition={{
+                    duration: 2.2,
+                    delay: 1.02,
+                    repeat: Infinity,
+                    ease: 'easeInOut',
+                  }}
+                >
+                  Defined by purpose.
+                </motion.span>
               </motion.span>
             </span>
             <motion.span
@@ -288,7 +353,7 @@ export default function Hero() {
               className="mt-3 block h-0.5 w-full origin-left bg-[#d87946]"
               initial={{ scaleX: 0 }}
               animate={{ scaleX: 1 }}
-              transition={{ duration: 2, ease: [0.22, 1, 0.3, 1] }}
+              transition={{ duration: 1.1, delay: 0.15, ease: [0.22, 1, 0.3, 1] }}
             />
           </h1>
           <p
