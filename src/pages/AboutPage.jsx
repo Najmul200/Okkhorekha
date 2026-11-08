@@ -36,7 +36,7 @@ export default function AboutPage() {
       <div className="mx-auto w-[min(1280px,calc(100%-3rem))] max-[700px]:w-[calc(100%-2rem)] max-[360px]:w-[calc(100%-1.5rem)]">
         <header className="max-w-4xl py-10 max-[700px]:py-5" data-reveal>
           <span className="text-xs font-bold uppercase tracking-[0.13em] text-ink">About the studio</span>
-          <h1 className="my-3 max-w-3xl font-display text-5xl font-normal leading-tight max-[700px]:text-4xl">Designing for life, place, and purpose.</h1>
+          <h1 className="my-3 max-w-3xl font-display text-5xl font-medium leading-tight max-[700px]:text-4xl">Designing for life, place, and purpose.</h1>
           <p className="max-w-2xl text-lg text-muted">
             We are অক্ষরেখা, an architecture and interior studio in Dhaka. Our work brings clear
             ideas, careful craft, and everyday needs together.
@@ -53,7 +53,7 @@ export default function AboutPage() {
           />
           <div>
             <span className="text-xs font-bold uppercase tracking-[0.13em] text-ink">Our point of view</span>
-            <h2 className="my-3 font-display text-3xl font-normal leading-snug max-[700px]:text-2xl">Good design begins by understanding how a place is lived in.</h2>
+            <h2 className="my-3 font-display text-3xl font-medium leading-snug max-[700px]:text-2xl">Good design begins by understanding how a place is lived in.</h2>
             <p className="text-muted">
               Every project starts with listening: to the people who will use it, the character of
               the site, and the practical demands of the brief. From that foundation, we develop
@@ -68,7 +68,7 @@ export default function AboutPage() {
 
         <section className="border-t border-black/15 py-10" aria-labelledby="practice-title" data-reveal>
           <div className="mb-8 flex items-end justify-between gap-4 border-b border-black/15 pb-4 max-[700px]:flex-col max-[700px]:items-start max-[700px]:gap-1">
-            <h2 id="practice-title" className="font-display text-[2.45rem] font-normal leading-tight max-[700px]:text-3xl">What we do</h2>
+            <h2 id="practice-title" className="font-display text-[2.45rem] font-medium leading-tight max-[700px]:text-3xl">What we do</h2>
             <p className="max-w-xl text-muted">One thoughtful process across every scale of work.</p>
           </div>
           <div className="grid grid-cols-3 gap-4 max-[900px]:grid-cols-2 max-[700px]:grid-cols-1">
@@ -87,7 +87,7 @@ export default function AboutPage() {
         <div className="grid grid-cols-4 items-center gap-4 border-t border-black/15 py-6 max-[700px]:grid-cols-2" data-reveal>
           {STATS.map((stat) => (
             <div className="border-0 bg-transparent" key={stat.label}>
-              <strong className="block font-display text-3xl font-normal text-black">{stat.value}</strong>
+              <strong className="block font-display text-3xl font-medium text-black">{stat.value}</strong>
               <span className="text-xs text-muted">{stat.label}</span>
             </div>
           ))}

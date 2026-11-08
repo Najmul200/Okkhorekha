@@ -41,7 +41,7 @@ export default function CategoryPage() {
         </nav>
 
         <div className="mb-7">
-          <h1 className="font-display text-4xl font-normal leading-tight">{cat.status}s</h1>
+          <h1 className="font-display text-4xl font-medium leading-tight">{cat.status}s</h1>
           <p className="mt-2 text-sm text-muted">
             {cat.projects.length} {cat.projects.length === 1 ? 'project' : 'projects'}
           </p>
@@ -64,7 +64,7 @@ export default function CategoryPage() {
         {cat.projects.length === 0 ? (
           <div className="max-w-3xl border-t border-black/15 py-12">
             <span className="text-xs font-bold uppercase tracking-[0.13em] text-ink">{cat.status}</span>
-            <h2 className="mb-2 font-display text-3xl font-normal">Projects coming soon</h2>
+            <h2 className="mb-2 font-display text-3xl font-medium">Projects coming soon</h2>
             <p className="text-muted">New work is in progress. Please check back soon.</p>
           </div>
         ) : (
@@ -74,7 +74,7 @@ export default function CategoryPage() {
                 {anyYear && <div className="w-15 shrink-0 pt-2 text-sm font-bold max-[700px]:w-auto max-[700px]:pt-0">{g.year || ''}</div>}
                 <div className="flex flex-wrap gap-4">
                   {g.items.map((p) => (
-                    <Link className="w-47.5 rounded-sm border border-black/15 bg-white p-2 transition-all duration-200 hover:-translate-y-1 hover:border-black hover:shadow-lg max-[700px]:w-[calc(50%-0.5rem)]" key={p.folder} to={projectPath(cat, p)} data-reveal>
+                    <Link className="w-47.5 rounded-sm border border-black/15 bg-surface p-2 transition-all duration-200 hover:-translate-y-1 hover:border-black hover:shadow-lg max-[700px]:w-[calc(50%-0.5rem)]" key={p.folder} to={projectPath(cat, p)} data-reveal>
                       <img className="aspect-square w-full rounded-sm object-cover" src={p.cover} alt={p.alt} loading="lazy" decoding="async" />
                       <h2 className="mt-3 text-xs font-semibold uppercase leading-snug tracking-wide">{p.title}</h2>
                     </Link>

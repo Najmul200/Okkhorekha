@@ -13,7 +13,7 @@ export default function Projects() {
     <section className="py-20 max-[700px]:py-14" id="projects" aria-labelledby="projects-title" data-reveal>
       <div className="mx-auto w-[min(1280px,calc(100%-3rem))] max-[700px]:w-[calc(100%-2rem)] max-[360px]:w-[calc(100%-1.5rem)]">
         <div className="mb-8 flex items-end justify-between gap-4 border-b border-black/15 pb-4 max-[700px]:flex-col max-[700px]:items-start max-[700px]:gap-1">
-          <h2 id="projects-title" className="font-display text-[2.45rem] font-normal leading-tight max-[700px]:text-3xl">Projects</h2>
+          <h2 id="projects-title" className="font-display text-[2.45rem] font-medium leading-tight max-[700px]:text-3xl">Projects</h2>
           <p className="max-w-xl text-muted">A simple overview of our current and completed work.</p>
         </div>
 
@@ -52,7 +52,7 @@ const hasProjects = categoryProjects.length > 0;
                 )}
                 <div className="project-card-caption absolute inset-x-0 bottom-0 z-2 flex flex-col items-start gap-1 bg-linear-to-t from-black via-black/85 to-transparent p-5 text-left text-white max-[700px]:p-4">
                   <span className="text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-white/75">{hasProjects ? c.tag : 'Portfolio preview'}</span>
-                  <h3 className="font-display text-[1.7rem] font-normal leading-tight max-[700px]:text-xl">{hasProjects ? c.title : 'Projects coming soon'}</h3>
+                  <h3 className="font-display text-[1.7rem] font-medium leading-tight max-[700px]:text-xl">{hasProjects ? c.title : 'Projects coming soon'}</h3>
                   <p className="max-w-sm text-sm leading-snug text-white/90 max-[700px]:text-[0.84rem]">{hasProjects ? c.text : 'New work in this category is being prepared.'}</p>
                   <span className="mt-2 inline-flex items-center gap-2 text-sm font-bold text-white underline decoration-white/50 underline-offset-4 transition-[gap] duration-200 group-hover:gap-3 group-focus-visible:gap-3">
                     {hasProjects ? 'Explore projects' : 'Coming soon'} <span aria-hidden="true">↗</span>

@@ -62,10 +62,10 @@ export default function Reviews({ projectId, projectTitle }) {
     <section className="py-20 max-[700px]:py-14" id="review" aria-labelledby="review-title" data-reveal>
       <div className="mx-auto w-[min(1280px,calc(100%-3rem))] max-[700px]:w-[calc(100%-2rem)] max-[360px]:w-[calc(100%-1.5rem)]">
         <div className="mb-8 flex items-end justify-between gap-4 border-b border-black/15 pb-4 max-[700px]:flex-col max-[700px]:items-start max-[700px]:gap-1">
-          <h2 id="review-title" className="font-display text-[2.45rem] font-normal leading-tight max-[700px]:text-3xl">Client Reviews</h2>
+          <h2 id="review-title" className="font-display text-[2.45rem] font-medium leading-tight max-[700px]:text-3xl">Client Reviews</h2>
           <p className="max-w-xl text-muted">Thoughts from clients connected to {projectTitle}.</p>
         </div>
-        <div className="mt-5 rounded-sm border border-neutral-300 bg-white p-6 max-[700px]:p-4" data-reveal>
+        <div className="mt-5 rounded-sm border border-neutral-300 bg-surface p-6 max-[700px]:p-4" data-reveal>
           <p className="mb-4 text-muted">Share your experience with this project.</p>
           <form id="reviewForm" className="grid gap-4" onSubmit={handleSubmit}>
             <input
@@ -126,7 +126,7 @@ export default function Reviews({ projectId, projectTitle }) {
           ) : (
             reviews.map((item, index) => (
               <article
-                className="min-h-45 min-w-0 wrap-anywhere rounded border border-neutral-200 bg-white p-5 shadow-sm animate-[review-card-enter_500ms_ease_both] max-[700px]:min-h-0"
+                className="min-h-45 min-w-0 wrap-anywhere rounded border border-neutral-200 bg-surface p-5 shadow-sm animate-[review-card-enter_500ms_ease_both] max-[700px]:min-h-0"
                 key={item._id}
                 style={{ animationDelay: `${Math.min(index, 5) * 65}ms` }}
               >

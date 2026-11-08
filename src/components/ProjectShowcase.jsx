@@ -28,38 +28,65 @@ export default function ProjectShowcase({
   useEffect(() => {
     if (galleryImages.length < 2 || !isGalleryInView || isGalleryPaused || lightboxIndex !== null) return undefined;
 
+    const firstSlide = window.setTimeout(() => {
+      setActiveImage((current) => (current + 1) % galleryImages.length);
+    }, 250);
     const interval = window.setInterval(() => {
       setActiveImage((current) => (current + 1) % galleryImages.length);
-    }, 3000);
+    }, 3250);
 
-    return () => window.clearInterval(interval);
+    return () => {
+      window.clearTimeout(firstSlide);
+      window.clearInterval(interval);
+    };
   }, [galleryImages.length, isGalleryInView, isGalleryPaused, lightboxIndex]);
 
   useEffect(() => {
     const gallery = galleryRef.current;
     if (!gallery) return undefined;
 
-    let observer;
-    const observeGalleryCenter = () => {
-      observer?.disconnect();
-      const center = window.innerHeight / 2;
-      observer = new IntersectionObserver(
-        ([entry]) => setIsGalleryInView(entry.isIntersecting),
-        {
-          rootMargin: `-${Math.max(center - 1, 0)}px 0px -${center}px 0px`,
-          threshold: 0,
-        }
-      );
-      observer.observe(gallery);
+    const selectActiveGallery = () => {
+      const viewportCenter = window.innerHeight / 2;
+      const candidates = Array.from(document.querySelectorAll('[data-project-gallery]'))
+        .map((element) => {
+          const bounds = element.getBoundingClientRect();
+          const visibleHeight = Math.max(
+            0,
+            Math.min(bounds.bottom, window.innerHeight) - Math.max(bounds.top, 0)
+          );
+          return {
+            id: element.dataset.galleryIndex,
+            ratio: visibleHeight / bounds.height,
+            distance: Math.abs((bounds.top + bounds.bottom) / 2 - viewportCenter),
+          };
+        })
+        .filter((candidate) => candidate.ratio >= 0.5)
+        .sort((a, b) => a.distance - b.distance);
+
+      window.dispatchEvent(new CustomEvent('project-gallery-active', {
+        detail: candidates[0]?.id ?? null,
+      }));
     };
 
-    observeGalleryCenter();
-    window.addEventListener('resize', observeGalleryCenter);
-    return () => {
-      observer?.disconnect();
-      window.removeEventListener('resize', observeGalleryCenter);
+    const handleIntersection = () => selectActiveGallery();
+    const handleActiveGallery = (event) => {
+      setIsGalleryInView(event.detail === String(index));
     };
-  }, []);
+    const observer = new IntersectionObserver(handleIntersection, {
+      threshold: [0, 0.5],
+    });
+
+    observer.observe(gallery);
+    window.addEventListener('project-gallery-active', handleActiveGallery);
+    window.addEventListener('resize', selectActiveGallery);
+    selectActiveGallery();
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('project-gallery-active', handleActiveGallery);
+      window.removeEventListener('resize', selectActiveGallery);
+    };
+  }, [index]);
 
   useEffect(() => {
     if (lightboxIndex === null) return undefined;
@@ -92,7 +119,7 @@ export default function ProjectShowcase({
     >
       <span
         data-timeline-marker
-        className={`relative z-20 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-sm border border-black/40 bg-[#f4f3f1] text-sm font-semibold tracking-[0.04em] text-black ${
+        className={`relative z-20 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-sm border border-black/40 bg-paper text-sm font-semibold tracking-[0.04em] text-black ${
           contentOnLeft ? 'order-1' : 'order-2'
         }`}
       >
@@ -128,6 +155,8 @@ export default function ProjectShowcase({
     <div
       ref={galleryRef}
       data-timeline-gallery
+      data-project-gallery
+      data-gallery-index={index}
       className="relative z-10 col-start-2 row-start-2 h-100 min-w-0 overflow-hidden rounded-xl bg-[#d7d7d7] md:col-span-2 md:col-start-2 md:h-120"
       onMouseEnter={() => setIsGalleryPaused(true)}
       onMouseLeave={() => setIsGalleryPaused(false)}

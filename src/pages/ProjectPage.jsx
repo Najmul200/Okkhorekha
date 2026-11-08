@@ -56,7 +56,7 @@ export default function ProjectPage() {
         </nav>
 
         <div className="mb-7" data-reveal>
-          <h1 className="font-display text-4xl font-normal leading-tight">{project.title}</h1>
+          <h1 className="font-display text-4xl font-medium leading-tight">{project.title}</h1>
           <dl className="mt-4 flex flex-wrap gap-x-9 gap-y-3">
             {project.location && (
               <div>

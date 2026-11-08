@@ -2,7 +2,7 @@ import { FaWhatsapp } from 'react-icons/fa';
 import { SITE } from '../data/content.js';
 
 const linkClass =
-  'group relative grid size-14 place-items-center rounded-full border border-neutral-300 bg-white text-3xl text-ink shadow-lg animate-[whatsapp-float_3s_ease-in-out_infinite] transition-all duration-200 hover:-translate-y-1 hover:animate-none hover:border-black hover:bg-black hover:text-white hover:shadow-xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-black';
+  'group relative grid size-14 place-items-center rounded-full border border-neutral-300 bg-surface text-3xl text-ink shadow-lg animate-[whatsapp-float_3s_ease-in-out_infinite] transition-all duration-200 hover:-translate-y-1 hover:animate-none hover:border-black hover:bg-black hover:text-white hover:shadow-xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-black';
 
 export default function SocialContactLinks() {
   const digits = SITE.whatsapp.replace(/\D/g, '');

@@ -178,7 +178,7 @@ export default function Contact() {
               Start a conversation
             </span>
 
-            <h1 className="mb-4 max-w-xl font-display text-5xl font-normal leading-tight max-[700px]:text-4xl" id="contact-title">
+            <h1 className="mb-4 max-w-xl font-display text-5xl font-medium leading-tight max-[700px]:text-4xl" id="contact-title">
               Let’s build something extraordinary.
             </h1>
 
@@ -220,7 +220,7 @@ export default function Contact() {
               Contact Form
           ====================================== */}
 
-          <div className="rounded-sm border border-neutral-300 bg-white p-6 max-[700px]:p-4">
+          <div className="rounded-sm border border-neutral-300 bg-surface p-6 max-[700px]:p-4">
 
             <form
               id="inquiryForm"

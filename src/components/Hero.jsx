@@ -259,7 +259,7 @@ export default function Hero() {
   }, [timeline]);
 
   return (
-    <section className="bg-[#f4f3f1] text-[#111]">
+    <section className="bg-paper text-[#111]">
       <div className="mx-auto w-[min(1240px,calc(100%-3rem))] pb-14 pt-10 max-[700px]:w-[calc(100%-1.5rem)] max-[700px]:pb-10 max-[700px]:pt-8">
         <div className="flex flex-col items-center justify-center pt-8 text-center">
           <h1 className="inline-block w-fit max-w-full text-3xl font-medium leading-[1.08] tracking-[-0.045em] text-black md:text-4xl">

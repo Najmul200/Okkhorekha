@@ -152,8 +152,8 @@ export default function AdminDashboard() {
   // --- 1. LOGIN SCREEN ---
   if (!session) {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', background: '#fff8f2', fontFamily: 'sans-serif' }}>
-        <form onSubmit={handleLogin} style={{ background: '#fff', padding: '40px', borderRadius: '8px', border: '1px solid #efdccf', width: '100%', maxWidth: '380px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', background: '#fff8f2', fontFamily: '"Montserrat", "Noto Sans Bengali", sans-serif' }}>
+        <form onSubmit={handleLogin} style={{ background: '#faf9f7', padding: '40px', borderRadius: '8px', border: '1px solid #efdccf', width: '100%', maxWidth: '380px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
           <h2 style={{ textAlign: 'center', letterSpacing: '2px', textTransform: 'uppercase', fontSize: '20px', margin: '0 0 10px 0' }}>Admin Login</h2>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
             <label style={{ fontSize: '12px', fontWeight: 'bold', color: '#666' }}>EMAIL</label>
@@ -197,10 +197,10 @@ export default function AdminDashboard() {
   });
 
   return (
-    <div style={{ display: 'flex', height: '100vh', background: '#fff8f2', fontFamily: 'sans-serif', overflow: 'hidden' }}>
+    <div style={{ display: 'flex', height: '100vh', background: '#fff8f2', fontFamily: '"Montserrat", "Noto Sans Bengali", sans-serif', overflow: 'hidden' }}>
       
       {/* Sidebar */}
-      <div style={{ width: '240px', borderRight: '1px solid #efdccf', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '30px 20px', background: '#fff' }}>
+      <div style={{ width: '240px', borderRight: '1px solid #efdccf', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '30px 20px', background: '#faf9f7' }}>
         <div>
           <div style={{ marginBottom: '40px' }}>
             <h2 style={{ fontSize: '18px', letterSpacing: '2px', margin: '0 0 5px 0', fontWeight: '900' }}>Akkhorekha Architects</h2>
@@ -222,7 +222,7 @@ export default function AdminDashboard() {
                     padding: '10px 14px',
                     fontSize: '14px',
                     cursor: 'pointer',
-                    fontWeight: isActive ? 'bold' : 'normal',
+                    fontWeight: '600',
                     borderRadius: '5px'
                   }}
                 >
@@ -250,7 +250,7 @@ export default function AdminDashboard() {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '20px', flexWrap: 'wrap', marginBottom: '30px' }}>
           <div>
             <span style={{ fontSize: '12px', color: '#888', letterSpacing: '1px' }}>{visibleProjects.length} SHOWN / {projects.length} TOTAL</span>
-            <h1 style={{ fontSize: '28px', textTransform: 'capitalize', margin: '5px 0 0 0', fontWeight: '700' }}>{activeTab}</h1>
+            <h1 style={{ fontSize: '28px', textTransform: 'capitalize', margin: '5px 0 0 0', fontWeight: '600' }}>{activeTab}</h1>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
             <input
@@ -265,7 +265,7 @@ export default function AdminDashboard() {
               type="button"
               onClick={fetchProjects}
               disabled={fetchLoading}
-              style={{ background: '#fff', color: '#74401f', border: '1px solid #efdccf', padding: '11px 16px', fontWeight: 'bold', fontSize: '13px', cursor: fetchLoading ? 'wait' : 'pointer', borderRadius: '5px' }}
+              style={{ background: '#faf9f7', color: '#74401f', border: '1px solid #efdccf', padding: '11px 16px', fontWeight: 'bold', fontSize: '13px', cursor: fetchLoading ? 'wait' : 'pointer', borderRadius: '5px' }}
             >
               {fetchLoading ? 'LOADING...' : 'REFRESH'}
             </button>
@@ -279,7 +279,7 @@ export default function AdminDashboard() {
         </div>
 
         {/* Table View */}
-        <div style={{ background: '#fff', border: '1px solid #efdccf', borderRadius: '6px' }}>
+        <div style={{ background: '#faf9f7', border: '1px solid #efdccf', borderRadius: '6px' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '50px 1.5fr 2fr 1.2fr 1fr 1fr 100px', padding: '15px 20px', borderBottom: '1px solid #efdccf', fontSize: '12px', fontWeight: 'bold', color: '#888', letterSpacing: '1px' }}>
             <span>#</span>
             <span>COVER</span>
@@ -344,7 +344,7 @@ export default function AdminDashboard() {
       {/* Add New Modal */}
       {showModal && (
         <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}>
-          <form onSubmit={handleAddProject} style={{ background: '#fff', padding: '40px', width: '100%', maxWidth: '500px', borderRadius: '8px', border: '1px solid #efdccf', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          <form onSubmit={handleAddProject} style={{ background: '#faf9f7', padding: '40px', width: '100%', maxWidth: '500px', borderRadius: '8px', border: '1px solid #efdccf', display: 'flex', flexDirection: 'column', gap: '20px' }}>
             <h2 style={{ margin: '0', fontSize: '20px', letterSpacing: '1px' }}>Add New {activeTab.slice(0, -1)}</h2>
             
             <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
