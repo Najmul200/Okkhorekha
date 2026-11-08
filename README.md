@@ -31,9 +31,9 @@ Each review stores its project ID and title, author name, review text, rating, a
 ## EmailJS setup
 
 1. Create an [EmailJS](https://www.emailjs.com/) account, add an email service, and connect the inbox where inquiries should arrive.
-2. Create an email template. Set **To email** to `{{to_email}}` (do not hard-code an older recipient address). Use `{{from_name}}`, `{{reply_to}}`, and `{{message}}` in the template body. Set the template's reply-to address to `{{reply_to}}`.
+2. Create an email template. Set **To email** to `{{to_email}}` (do not hard-code a recipient address). Use `{{from_name}}`, `{{reply_to}}`, and `{{message}}` in the template body. Set the template's reply-to address to `{{reply_to}}`.
 3. Copy the Service ID, Template ID, and Public Key from EmailJS into `VITE_EMAILJS_SERVICE_ID`, `VITE_EMAILJS_TEMPLATE_ID`, and `VITE_EMAILJS_PUBLIC_KEY` in the root `.env` file.
-4. Restart the Vite dev server. The contact form will send inquiries to the address configured in `src/data/content.js`.
+4. Restart the Vite dev server. The contact form sends inquiries to `akkhorekhaarchitects@gmail.com`, configured in `src/data/content.js`.
 
 The EmailJS Public Key is intended for browser use. Keep MongoDB credentials only in `server/.env`.
 

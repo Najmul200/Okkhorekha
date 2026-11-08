@@ -4,7 +4,7 @@ export const SITE = {
   phone: '01786769966',
   phoneHref: 'tel:+8801786769966',
   whatsapp: '01774750911',
-  email: 'akkhorekhaarchitect@gmail.com',
+  email: 'akkhorekhaarchitects@gmail.com',
 };
 
 export const NAV_LINKS = [
