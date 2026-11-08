@@ -8,10 +8,7 @@ export default function Footer() {
         <div className="mb-7 grid grid-cols-[1.2fr_1fr_1fr] items-start gap-7 max-[900px]:grid-cols-1">
           <div>
             <h3 className="mb-3 font-display text-base font-medium text-white">{SITE.name}</h3>
-            <p className="max-w-sm leading-relaxed text-white/70">
-              Designing refined architecture and interiors with an emphasis on clarity, context,
-              and material intelligence.
-            </p>
+            <p className="text-sm text-white/60">Build by Najmul Islam</p>
           </div>
           <div>
             <h3 className="mb-3 font-display text-base font-medium text-white">Quick Links</h3>
@@ -28,7 +25,6 @@ export default function Footer() {
         </div>
         <div className="flex flex-wrap justify-between gap-3 border-t border-white/15 pt-4 text-sm text-white/65 max-[900px]:justify-center max-[900px]:text-center">
           <span>© 2026 {SITE.name}. All rights reserved.</span>
-          <span>Built for modern architecture studios.</span>
         </div>
       </div>
     </footer>

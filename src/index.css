@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 @theme {
-  --color-paper: #f0efed;
-  --color-surface: #faf9f7;
+  --color-paper: #e6e6e6;
+  --color-surface: #f3f3f3;
   --color-ink: #0b0b0b;
   --color-muted: #514e4b;
   --font-sans: "Montserrat", "Noto Sans Bengali", sans-serif;
