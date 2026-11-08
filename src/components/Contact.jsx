@@ -30,49 +30,6 @@ export default function Contact() {
     };
 
     // ==========================================
-    // Console: Show submitted form data
-    // ==========================================
-
-    console.log('=================================');
-    console.log('CONTACT FORM SUBMITTED');
-    console.log('=================================');
-
-    console.log('Name:', formData.name);
-    console.log('Email:', formData.email);
-    console.log('Title:', formData.title);
-    console.log('Message:', formData.message);
-
-    console.log('Full Form Data:', formData);
-
-    // Optional: Show raw FormData
-    console.log(
-      'Raw Form Data:',
-      Object.fromEntries(values.entries())
-    );
-
-    // ==========================================
-    // Get EmailJS environment variables
-    // ==========================================
-
-    const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-    const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
-
-    // ==========================================
-    // Check EmailJS configuration
-    // ==========================================
-
-    if (!serviceId || !templateId || !publicKey) {
-      console.error('EmailJS configuration is missing.');
-
-      setFeedback(
-        'Email delivery is not configured yet. Please add the EmailJS values to .env.'
-      );
-
-      return;
-    }
-
-    // ==========================================
     // Validate form
     // ==========================================
 
@@ -89,6 +46,18 @@ export default function Contact() {
       return;
     }
 
+    const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+    const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+    if (!serviceId || !templateId || !publicKey) {
+      console.error('EmailJS configuration is missing.');
+      setFeedback(
+        'Email sending is not configured for this site. Add the EmailJS environment variables to the hosting settings and redeploy.'
+      );
+      return;
+    }
+
     // ==========================================
     // Start sending
     // ==========================================
@@ -102,6 +71,9 @@ export default function Contact() {
       // ========================================
 
       const emailData = {
+        to_email: SITE.email,
+        from_name: formData.name,
+        reply_to: formData.email,
         name: formData.name,
         email: formData.email,
         title: formData.title,
@@ -109,16 +81,11 @@ export default function Contact() {
         message: formData.message,
       };
 
-      console.log('=================================');
-      console.log('DATA SENT TO EMAILJS');
-      console.log('=================================');
-      console.log('EmailJS Data:', emailData);
-
       // ========================================
       // Send email
       // ========================================
 
-      const response = await emailjs.send(
+      await emailjs.send(
         serviceId,
         templateId,
         emailData,
@@ -129,25 +96,13 @@ export default function Contact() {
       // Success
       // ========================================
 
-      console.log('=================================');
-      console.log('EMAIL SENT SUCCESSFULLY');
-      console.log('=================================');
-      console.log('EmailJS Response:', response);
-
       form.reset();
 
       setFeedback(
         'Thank you. Your inquiry has been sent successfully.'
       );
     } catch (error) {
-      // ========================================
-      // Error
-      // ========================================
-
-      console.error('=================================');
-      console.error('EMAILJS ERROR');
-      console.error('=================================');
-      console.error(error);
+      console.error('EmailJS request failed:', error);
 
       setFeedback(
         'Your inquiry could not be sent. Please try again or contact us by email.'

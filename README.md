@@ -47,6 +47,6 @@ Create a folder for the project under `src/assets/projects/Ready Project/`, `Ong
 
 ## Production deployment
 
-Deploy the frontend to Vercel or Netlify with `npm run build`. Deploy the Express API separately to a Node.js service. Set `MONGODB_URI` and `CLIENT_ORIGIN` in the API service, and set `VITE_API_URL=https://your-api-domain.com/api` in the frontend build environment. Keep all credentials in environment settings, not in the repository.
+Deploy the frontend to Vercel or Netlify with `npm run build`. Deploy the Express API separately to a Node.js service. Set `MONGODB_URI` and `CLIENT_ORIGIN` in the API service. In the frontend hosting settings, add `VITE_API_URL=https://your-api-domain.com/api` and the EmailJS variables `VITE_EMAILJS_SERVICE_ID`, `VITE_EMAILJS_TEMPLATE_ID`, and `VITE_EMAILJS_PUBLIC_KEY`. These `VITE_` variables are embedded into the frontend at build time, so redeploy the frontend after adding or changing them. Keep server credentials in environment settings, not in the repository.
 
 Update the site domain in `index.html`, `public/robots.txt`, and `src/hooks/useSeo.js`. The sitemap is generated during the build.
