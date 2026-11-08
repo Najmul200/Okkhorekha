@@ -10,7 +10,7 @@ export const SITE = {
 export const NAV_LINKS = [
   { label: 'Home', href: '/' },
   { label: 'About Us', href: '/about' },
-  { label: 'Projects', href: '/#projects' },
+  { label: 'Projects', href: '/projects' },
   { label: 'Contact', href: '/contact' },
 ];
 
@@ -146,7 +146,7 @@ export const PROJECT_CATEGORIES = [
 //  title    -> page e ja nam dekhabe (na dile folder er nam theke hobe)
 //  location -> project page e dekhabe (Google Map link soho). Faka rakhle dekhabe na
 //  year     -> (optional) year dile category page e year onujayi sajano hobe
-//  tag      -> (optional) type, jemon 'Residential'
+//  sector   -> (optional) commercial, residential, or religious
 //  text     -> (optional) ek line description
 //  cover    -> (optional) kon picture cover hobe, jemon '02.jpg' (na dile prothom ta)
 //
@@ -154,12 +154,12 @@ export const PROJECT_CATEGORIES = [
 //  tokhon folder er nam-i project er nam hobe).
 export const PROJECT_INFO = {
   // ---- Ready Project ----
-  'khilkhet full unit': { title: 'Khilkhet Full Unit', location: '' },
-  'kitchen d5': { title: 'Kitchen D5', location: '' },
-  'MOHAKHALI DOHS': { title: 'Mohakhali DOHS', location: '' },
-  'Advocate': { title: 'Advocate', location: '' },
-  'bashundhara': { title: 'Bashundhara', location: '' },
-  'duplex reading': { title: 'Duplex Reading', location: '' },
+  'khilkhet full unit': { title: 'Khilkhet Full Unit', location: '', sector: 'residential' },
+  'kitchen d5': { title: 'Kitchen D5', location: '', sector: 'commercial' },
+  'MOHAKHALI DOHS': { title: 'Mohakhali DOHS', location: '', sector: 'religious' },
+  Advocate: { title: 'Advocate', location: '', sector: 'commercial' },
+  bashundhara: { title: 'Bashundhara', location: '', sector: 'residential' },
+  'duplex reading': { title: 'Duplex Reading', location: '', sector: 'residential' },
 
   // ---- Ongoing Project ----
 

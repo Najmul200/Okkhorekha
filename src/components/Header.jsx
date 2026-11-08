@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
 import { NAV_LINKS, SITE } from '../data/content.js';
+import { PROJECT_SECTORS } from '../data/projects.js';
 
 export default function Header() {
   const [open, setOpen] = useState(false);
@@ -10,12 +11,6 @@ export default function Header() {
   const reduceMotion = useReducedMotion();
   const { pathname } = useLocation();
   const onProjects = pathname.startsWith('/projects');
-  const projectCategories = [
-    { label: 'Residential', href: '/#project-residential' },
-    { label: 'Commercial', href: '/#project-commercial' },
-    { label: 'Religious', href: '/#project-religious' },
-  ];
-
   useEffect(() => {
     if (!searchOpen) return undefined;
 
@@ -38,7 +33,7 @@ export default function Header() {
     if (link.href === '/') return pathname === '/';
     if (link.href === '/about') return pathname === '/about';
     if (link.href === '/contact') return pathname === '/contact';
-    if (link.href === '/#projects') return onProjects || (pathname === '/' && window.location.hash === '#projects');
+    if (link.href === '/projects') return onProjects;
     return false;
   };
 
@@ -119,15 +114,15 @@ export default function Header() {
                     className="absolute right-0 top-full z-[90] mt-2 flex w-56 origin-top-right flex-col gap-1 rounded-xl border border-neutral-800 bg-neutral-900 p-3 text-left shadow-xl max-[700px]:static max-[700px]:mt-1 max-[700px]:w-full"
                     aria-label="Search project categories"
                   >
-                    {projectCategories.map((category, index) => (
+                    {PROJECT_SECTORS.map((category, index) => (
                       <motion.li
-                        key={category.href}
+                        key={category.key}
                         initial={{ opacity: 0, x: -8 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.22, delay: index * 0.06, ease: 'easeOut' }}
                       >
                         <Link
-                          to={category.href}
+                          to={`/projects#project-${category.key}`}
                           className="block rounded-lg px-3 py-2 text-sm text-white/85 transition-all duration-200 hover:bg-neutral-800 hover:pl-5 hover:text-white"
                           onClick={() => {
                             setSearchOpen(false);

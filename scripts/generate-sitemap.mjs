@@ -20,6 +20,7 @@ const today = new Date().toISOString().slice(0, 10);
 
 const urls = [
   { loc: `${SITE}/`, priority: '1.0' },
+  { loc: `${SITE}/projects`, priority: '0.9' },
   { loc: `${SITE}/about`, priority: '0.7' },
   { loc: `${SITE}/contact`, priority: '0.6' },
 ];

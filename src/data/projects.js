@@ -21,6 +21,12 @@ const byYear = (a, b) => {
   return a.folder.localeCompare(b.folder, undefined, { numeric: true });
 };
 
+export const PROJECT_SECTORS = [
+  { key: 'commercial', label: 'Commercial' },
+  { key: 'residential', label: 'Residential' },
+  { key: 'religious', label: 'Religious' },
+];
+
 // 3 ta category (Ready, Ongoing, Complete) + tar bhitorer project gulo
 export const CATEGORIES = PROJECT_CATEGORIES.map((cat) => {
   const data = getCategory(cat.key);
@@ -51,6 +57,7 @@ export const CATEGORIES = PROJECT_CATEGORIES.map((cat) => {
         year,
         location: info.location || '',
         tag: info.tag || '',
+        sector: info.sector || '',
         text: info.text || '',
         alt: info.alt || title,
         images: p.files.map((x) => x.url),

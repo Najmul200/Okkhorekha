@@ -43,7 +43,7 @@ The floating WhatsApp icon opens a prefilled chat to the number in `SITE.whatsap
 
 ## Add a project
 
-Create a folder for the project under `src/assets/projects/Ready Project/`, `Ongoing Project/`, or `Complete Project/` and place its images there. The folder name becomes the project title. Add optional details in `PROJECT_INFO` in `src/data/content.js`. WebP copies are generated automatically before dev and build; original project images remain unchanged.
+Create a folder for the project under `src/assets/projects/Ready Project/`, `Ongoing Project/`, or `Complete Project/` and place its images there. The folder name becomes the project title. Add its `sector` (`commercial`, `residential`, or `religious`) and optional details in `PROJECT_INFO` in `src/data/content.js` so it appears in the right group on the Projects page. WebP copies are generated automatically before dev and build; original project images remain unchanged.
 
 ## Production deployment
 

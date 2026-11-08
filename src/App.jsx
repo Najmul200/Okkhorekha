@@ -1,10 +1,11 @@
 import { useEffect, useRef } from 'react';
-import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import Header from './components/Header.jsx';
 import Footer from './components/Footer.jsx';
 import Home from './pages/Home.jsx';
 import AboutPage from './pages/AboutPage.jsx';
 import CategoryPage from './pages/CategoryPage.jsx';
+import ProjectsPage from './pages/ProjectsPage.jsx';
 import ProjectPage from './pages/ProjectPage.jsx';
 import NotFound from './pages/NotFound.jsx';
 import Contact from './components/Contact.jsx';
@@ -14,20 +15,8 @@ import AdminDashboard from './pages/AdminDashboard.jsx';
 // Page change hole upore jabe, #hash thakle sei section e jabe
 function ScrollManager() {
   const location = useLocation();
-  const navigate = useNavigate();
-  const handledInitialLoad = useRef(false);
 
   useEffect(() => {
-    if (!handledInitialLoad.current) {
-      handledInitialLoad.current = true;
-      const navigation = performance.getEntriesByType('navigation')[0];
-
-      if (navigation?.type === 'reload' && (location.pathname !== '/' || location.hash)) {
-        navigate('/', { replace: true });
-        return;
-      }
-    }
-
     if (location.hash) {
       const el = document.querySelector(location.hash);
       if (el) {
@@ -94,6 +83,7 @@ export default function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/projects" element={<ProjectsPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/contact" element={<main className="min-h-[60vh] bg-paper py-8 pb-16"><Contact /></main>} />
         <Route path="/projects/:category" element={<CategoryPage />} />
