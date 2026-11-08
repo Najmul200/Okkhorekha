@@ -42,7 +42,7 @@ export default function AdminDashboard() {
     const { data, error } = await supabase
       .from('posts')
       .select('*')
-      .order('created_at', { ascending: false });
+      .order('id', { ascending: false });
 
     if (error) {
       console.error('Error fetching data:', error.message);
