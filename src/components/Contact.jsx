@@ -85,12 +85,7 @@ export default function Contact() {
       // Send email
       // ========================================
 
-      await emailjs.send(
-        serviceId,
-        templateId,
-        emailData,
-        publicKey
-      );
+      await emailjs.send(serviceId, templateId, emailData, publicKey);
 
       // ========================================
       // Success
@@ -102,10 +97,19 @@ export default function Contact() {
         'Thank you. Your inquiry has been sent successfully.'
       );
     } catch (error) {
-      console.error('EmailJS request failed:', error);
+      const errorMessage = typeof error?.text === 'string'
+        ? error.text
+        : error instanceof Error
+          ? error.message
+          : 'Unknown EmailJS error';
+
+      console.error('EmailJS request failed:', {
+        status: error?.status,
+        message: errorMessage,
+      });
 
       setFeedback(
-        'Your inquiry could not be sent. Please try again or contact us by email.'
+        `Your inquiry could not be sent (${errorMessage}). Please check the EmailJS template recipient and allowed origins.`
       );
     } finally {
       setSending(false);
