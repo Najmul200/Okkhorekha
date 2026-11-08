@@ -47,18 +47,81 @@ export default function Header() {
             animate={{ clipPath: 'inset(0 0% 0 0)' }}
             transition={{ duration: reduceMotion ? 0 : 1.5, ease: 'easeOut' }}
           >
-            <motion.img
-              src="/images/AKKHOREKHA.png"
-              alt={SITE.name}
-              className="block h-19.5 w-auto max-w-70 object-contain max-[700px]:h-15 max-[700px]:max-w-55 max-[360px]:h-13"
-              initial={reduceMotion ? false : { opacity: 0.12, y: 3, filter: 'blur(3px)' }}
-              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+            <motion.span
+              className="block"
+              animate={
+                reduceMotion
+                  ? undefined
+                  : {
+                      y: [0, -2, 0],
+                      filter: [
+                        'drop-shadow(0 0 0px rgba(210, 135, 69, 0))',
+                        'drop-shadow(0 0 6px rgba(210, 135, 69, 0.28))',
+                        'drop-shadow(0 0 0px rgba(210, 135, 69, 0))',
+                      ],
+                    }
+              }
               transition={{
-                duration: reduceMotion ? 0 : 1.5,
-                delay: reduceMotion ? 0 : 0.05,
-                ease: 'easeOut',
+                duration: 5,
+                delay: reduceMotion ? 0 : 1.5,
+                repeat: Infinity,
+                ease: 'easeInOut',
               }}
-            />
+            >
+              <span className="relative block">
+                {!reduceMotion && (
+                  <motion.span
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-x-[12%] inset-y-[22%] z-0 rounded-full blur-2xl"
+                    animate={{ opacity: [0.18, 0.48, 0.18], scale: [0.92, 1.08, 0.92] }}
+                    transition={{
+                      duration: 4.5,
+                      delay: 1.5,
+                      repeat: Infinity,
+                      ease: 'easeInOut',
+                    }}
+                    style={{
+                      background:
+                        'radial-gradient(ellipse, rgba(210, 135, 69, 0.52) 0%, rgba(210, 135, 69, 0.18) 44%, transparent 76%)',
+                    }}
+                  />
+                )}
+                <motion.img
+                  src="/images/AKKHOREKHA.png"
+                  alt={SITE.name}
+                  className="relative z-10 block h-19.5 w-auto max-w-70 object-contain max-[700px]:h-15 max-[700px]:max-w-55 max-[360px]:h-13"
+                  initial={reduceMotion ? false : { opacity: 0.12, y: 3, filter: 'blur(3px)' }}
+                  animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                  transition={{
+                    duration: reduceMotion ? 0 : 1.5,
+                    delay: reduceMotion ? 0 : 0.05,
+                    ease: 'easeOut',
+                  }}
+                />
+                {!reduceMotion && (
+                  <motion.span
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-0 z-20"
+                    initial={{ backgroundPosition: '150% 0' }}
+                    animate={{ backgroundPosition: '-150% 0' }}
+                    transition={{ duration: 1.3, delay: 1.55, ease: 'easeInOut' }}
+                    style={{
+                      backgroundImage:
+                        'linear-gradient(110deg, transparent 38%, rgba(210, 135, 69, 0.18) 47%, rgba(255, 227, 184, 0.85) 50%, rgba(210, 135, 69, 0.18) 53%, transparent 62%)',
+                      backgroundSize: '220% 100%',
+                      maskImage: 'url(/images/AKKHOREKHA.png)',
+                      maskPosition: 'center',
+                      maskRepeat: 'no-repeat',
+                      maskSize: 'contain',
+                      WebkitMaskImage: 'url(/images/AKKHOREKHA.png)',
+                      WebkitMaskPosition: 'center',
+                      WebkitMaskRepeat: 'no-repeat',
+                      WebkitMaskSize: 'contain',
+                    }}
+                  />
+                )}
+              </span>
+            </motion.span>
           </motion.span>
         </Link>
         <button
