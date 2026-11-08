@@ -152,8 +152,8 @@ export default function AdminDashboard() {
   // --- 1. LOGIN SCREEN ---
   if (!session) {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', background: '#fff8f2', fontFamily: '"Montserrat", "Noto Sans Bengali", sans-serif' }}>
-        <form onSubmit={handleLogin} style={{ background: '#faf9f7', padding: '40px', borderRadius: '8px', border: '1px solid #efdccf', width: '100%', maxWidth: '380px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+      <div className="admin-login" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', background: '#fff8f2', fontFamily: '"Montserrat", "Noto Sans Bengali", sans-serif' }}>
+        <form className="admin-login-form" onSubmit={handleLogin} style={{ background: '#faf9f7', padding: '40px', borderRadius: '8px', border: '1px solid #efdccf', width: '100%', maxWidth: '380px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
           <h2 style={{ textAlign: 'center', letterSpacing: '2px', textTransform: 'uppercase', fontSize: '20px', margin: '0 0 10px 0' }}>Admin Login</h2>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
             <label style={{ fontSize: '12px', fontWeight: 'bold', color: '#666' }}>EMAIL</label>
@@ -197,17 +197,17 @@ export default function AdminDashboard() {
   });
 
   return (
-    <div style={{ display: 'flex', height: '100vh', background: '#fff8f2', fontFamily: '"Montserrat", "Noto Sans Bengali", sans-serif', overflow: 'hidden' }}>
+    <div className="admin-dashboard" style={{ display: 'flex', height: '100vh', background: '#fff8f2', fontFamily: '"Montserrat", "Noto Sans Bengali", sans-serif', overflow: 'hidden' }}>
       
       {/* Sidebar */}
-      <div style={{ width: '240px', borderRight: '1px solid #efdccf', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '30px 20px', background: '#faf9f7' }}>
+      <div className="admin-sidebar" style={{ width: '240px', borderRight: '1px solid #efdccf', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '30px 20px', background: '#faf9f7' }}>
         <div>
-          <div style={{ marginBottom: '40px' }}>
+          <div className="admin-brand" style={{ marginBottom: '40px' }}>
             <h2 style={{ fontSize: '18px', letterSpacing: '2px', margin: '0 0 5px 0', fontWeight: '900' }}>Akkhorekha Architects</h2>
             <span style={{ fontSize: '11px', letterSpacing: '1.5px', color: '#888', textTransform: 'uppercase' }}>Admin</span>
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <div className="admin-nav" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             {menuItems.map((item) => {
               const isActive = activeTab.toLowerCase() === item.toLowerCase();
               return (
@@ -234,7 +234,7 @@ export default function AdminDashboard() {
         </div>
 
         {/* User Info & Sign Out */}
-        <div style={{ borderTop: '1px solid #efdccf', paddingTop: '20px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+        <div className="admin-user" style={{ borderTop: '1px solid #efdccf', paddingTop: '20px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
           <span style={{ fontSize: '12px', color: '#666', overflow: 'hidden', textOverflow: 'ellipsis' }}>{session.user.email}</span>
           <button 
             onClick={handleLogout}
@@ -246,13 +246,13 @@ export default function AdminDashboard() {
       </div>
 
       {/* Main Content Area */}
-      <div style={{ flex: 1, padding: '40px 50px', overflowY: 'auto', background: '#fff8f2' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '20px', flexWrap: 'wrap', marginBottom: '30px' }}>
+      <div className="admin-main" style={{ flex: 1, padding: '40px 50px', overflowY: 'auto', background: '#fff8f2' }}>
+        <div className="admin-toolbar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '20px', flexWrap: 'wrap', marginBottom: '30px' }}>
           <div>
             <span style={{ fontSize: '12px', color: '#888', letterSpacing: '1px' }}>{visibleProjects.length} SHOWN / {projects.length} TOTAL</span>
             <h1 style={{ fontSize: '28px', textTransform: 'capitalize', margin: '5px 0 0 0', fontWeight: '600' }}>{activeTab}</h1>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+          <div className="admin-actions" style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
             <input
               type="search"
               value={searchQuery}
@@ -279,8 +279,8 @@ export default function AdminDashboard() {
         </div>
 
         {/* Table View */}
-        <div style={{ background: '#faf9f7', border: '1px solid #efdccf', borderRadius: '6px' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '50px 1.5fr 2fr 1.2fr 1fr 1fr 100px', padding: '15px 20px', borderBottom: '1px solid #efdccf', fontSize: '12px', fontWeight: 'bold', color: '#888', letterSpacing: '1px' }}>
+        <div className="admin-table" style={{ background: '#faf9f7', border: '1px solid #efdccf', borderRadius: '6px' }}>
+          <div className="admin-table-row" style={{ display: 'grid', gridTemplateColumns: '50px 1.5fr 2fr 1.2fr 1fr 1fr 100px', padding: '15px 20px', borderBottom: '1px solid #efdccf', fontSize: '12px', fontWeight: 'bold', color: '#888', letterSpacing: '1px' }}>
             <span>#</span>
             <span>COVER</span>
             <span>PROJECT</span>
@@ -300,7 +300,7 @@ export default function AdminDashboard() {
           {fetchLoading && projects.length === 0 ? (
             <div style={{ padding: '40px', textAlign: 'center', color: '#888' }}>Loading content...</div>
           ) : visibleProjects.map((item, index) => (
-            <div key={item.id} style={{ display: 'grid', gridTemplateColumns: '50px 1.5fr 2fr 1.2fr 1fr 1fr 100px', padding: '15px 20px', borderBottom: '1px solid #f5ebe3', alignItems: 'center', fontSize: '14px' }}>
+            <div key={item.id} className="admin-table-row" style={{ display: 'grid', gridTemplateColumns: '50px 1.5fr 2fr 1.2fr 1fr 1fr 100px', padding: '15px 20px', borderBottom: '1px solid #f5ebe3', alignItems: 'center', fontSize: '14px' }}>
               <span style={{ color: '#888' }}>{String(index + 1).padStart(2, '0')}</span>
               <div>
                 {(Array.isArray(item.images) ? item.images[0] : item.image_url) ? (
@@ -343,8 +343,8 @@ export default function AdminDashboard() {
 
       {/* Add New Modal */}
       {showModal && (
-        <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}>
-          <form onSubmit={handleAddProject} style={{ background: '#faf9f7', padding: '40px', width: '100%', maxWidth: '500px', borderRadius: '8px', border: '1px solid #efdccf', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        <div className="admin-modal" style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}>
+          <form className="admin-modal-form" onSubmit={handleAddProject} style={{ background: '#faf9f7', padding: '40px', width: '100%', maxWidth: '500px', borderRadius: '8px', border: '1px solid #efdccf', display: 'flex', flexDirection: 'column', gap: '20px' }}>
             <h2 style={{ margin: '0', fontSize: '20px', letterSpacing: '1px' }}>Add New {activeTab.slice(0, -1)}</h2>
             
             <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
@@ -357,7 +357,7 @@ export default function AdminDashboard() {
               <input type="text" value={subtitle} onChange={(e) => setSubtitle(e.target.value)} style={{ padding: '10px', border: '1px solid #e8d6c8', borderRadius: '4px', fontSize: '14px' }} placeholder="e.g. MOS" />
             </div>
 
-            <div style={{ display: 'flex', gap: '15px' }}>
+            <div className="admin-modal-fields" style={{ display: 'flex', gap: '15px' }}>
               <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '6px' }}>
                 <label style={{ fontSize: '12px', fontWeight: 'bold', color: '#666' }}>LOCATION</label>
                 <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} style={{ padding: '10px', border: '1px solid #e8d6c8', borderRadius: '4px', fontSize: '14px' }} />

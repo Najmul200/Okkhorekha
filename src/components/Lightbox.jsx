@@ -40,10 +40,10 @@ const total = images.length;
       aria-label={`${project.title} photos`}
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >
-      <div className="flex items-center justify-between">
-        <div>
-          <strong>{project.title}</strong>
-          <span className="ml-4 text-sm text-white/65">
+      <div className="flex min-w-0 items-center justify-between gap-3">
+        <div className="flex min-w-0 items-center gap-3">
+          <strong className="max-w-[65vw] truncate">{project.title}</strong>
+          <span className="shrink-0 text-sm text-white/65">
             {index + 1} / {total}
           </span>
         </div>

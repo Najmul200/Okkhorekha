@@ -53,18 +53,24 @@ export default function SiteIntro() {
       window.addEventListener('load', finishLoading, { once: true });
     }
 
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-
     return () => {
       window.clearInterval(progressTimer);
       window.clearTimeout(fallbackTimer);
       window.clearTimeout(finishTimer);
       window.clearTimeout(removeTimer);
       window.removeEventListener('load', finishLoading);
-      document.body.style.overflow = previousOverflow;
     };
   }, [reduceMotion]);
+
+  useEffect(() => {
+    if (!visible || reduceMotion) return undefined;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [visible, reduceMotion]);
 
   if (!visible || reduceMotion) return null;
 

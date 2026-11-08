@@ -109,7 +109,7 @@ export default function ProjectShowcase({
 
   const projectHeading = (
     <motion.div
-      className={`flex flex-row items-center gap-2 ${
+      className={`flex min-w-0 flex-row flex-wrap items-center gap-2 ${
         contentOnLeft ? 'order-1' : 'order-2'
       }`}
       initial={{ opacity: 0, y: 0 }}
@@ -125,7 +125,7 @@ export default function ProjectShowcase({
       >
         {String(index + 1).padStart(2, '0')}
       </span>
-      <h2 className={`text-2xl font-medium tracking-[-0.04em] text-black md:text-3xl ${
+      <h2 className={`min-w-0 wrap-anywhere text-2xl font-medium tracking-[-0.04em] text-black md:text-3xl ${
         contentOnLeft ? 'order-2' : 'order-1'
       }`}>
         {title}
@@ -157,7 +157,7 @@ export default function ProjectShowcase({
       data-timeline-gallery
       data-project-gallery
       data-gallery-index={index}
-      className="relative z-10 col-start-2 row-start-2 h-100 min-w-0 overflow-hidden rounded-xl bg-[#d7d7d7] md:col-span-2 md:col-start-2 md:h-120"
+      className="relative z-10 col-start-2 row-start-2 h-[clamp(17rem,85vw,25rem)] min-w-0 overflow-hidden rounded-xl bg-[#d7d7d7] md:col-span-2 md:col-start-2 md:h-120"
       onMouseEnter={() => setIsGalleryPaused(true)}
       onMouseLeave={() => setIsGalleryPaused(false)}
       onFocusCapture={() => setIsGalleryPaused(true)}
