@@ -11,6 +11,7 @@ import NotFound from './pages/NotFound.jsx';
 import Contact from './components/Contact.jsx';
 import SocialContactLinks from './components/SocialContactLinks.jsx';
 import AdminDashboard from './pages/AdminDashboard.jsx';
+import SiteIntro from './components/SiteIntro.jsx';
 
 // Page change hole upore jabe, #hash thakle sei section e jabe
 function ScrollManager() {
@@ -80,6 +81,7 @@ export default function App() {
     <>
       <ScrollManager />
       <ScrollRevealManager />
+      {pathname !== '/admin' && <SiteIntro />}
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
