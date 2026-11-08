@@ -7,16 +7,23 @@ import { PROJECT_SECTORS } from '../data/projects.js';
 export default function Header() {
   const [open, setOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [logoAnimationKey, setLogoAnimationKey] = useState(0);
   const searchMenuRef = useRef(null);
   const reduceMotion = useReducedMotion();
   const { pathname } = useLocation();
   const onProjects = pathname.startsWith('/projects');
+  const [logoReady, setLogoReady] = useState(reduceMotion || pathname === '/admin');
   useEffect(() => {
-    const replayLogoAnimation = () => setLogoAnimationKey((key) => key + 1);
-    window.addEventListener('site-preloader-complete', replayLogoAnimation);
-    return () => window.removeEventListener('site-preloader-complete', replayLogoAnimation);
-  }, []);
+    if (reduceMotion || pathname === '/admin') {
+      setLogoReady(true);
+      return undefined;
+    }
+
+    const revealLogo = () => {
+      setLogoReady(true);
+    };
+    window.addEventListener('site-preloader-opened', revealLogo);
+    return () => window.removeEventListener('site-preloader-opened', revealLogo);
+  }, [pathname, reduceMotion]);
 
   useEffect(() => {
     if (!searchOpen) return undefined;
@@ -49,10 +56,9 @@ export default function Header() {
       <div className="relative z-1 mx-auto flex w-[min(1280px,calc(100%-3rem))] items-center justify-between gap-4 py-2 max-[700px]:grid max-[700px]:min-h-19.75 max-[700px]:grid-cols-[minmax(0,1fr)_44px] max-[700px]:py-[0.55rem] max-[360px]:min-h-18">
         <Link to="/" className="inline-flex flex-auto items-center max-[700px]:col-start-1" aria-label={SITE.name} onClick={() => setOpen(false)}>
           <motion.span
-            key={logoAnimationKey}
             className="block"
             initial={reduceMotion ? false : { clipPath: 'inset(0 100% 0 0)' }}
-            animate={{ clipPath: 'inset(0 0% 0 0)' }}
+            animate={{ clipPath: reduceMotion || logoReady ? 'inset(0 0% 0 0)' : 'inset(0 100% 0 0)' }}
             transition={{ duration: reduceMotion ? 0 : 1.5, ease: 'easeOut' }}
           >
             <motion.span

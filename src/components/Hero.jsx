@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { CATEGORIES } from '../data/projects.js';
 import ProjectShowcase from './ProjectShowcase.jsx';
@@ -83,6 +83,7 @@ const featuredProjects = featuredProjectConfig.flatMap((item) => {
 
 export default function Hero() {
   const reduceMotion = useReducedMotion();
+  const [introReady, setIntroReady] = useState(reduceMotion);
   const timelineRef = useRef(null);
   const [timeline, setTimeline] = useState({
     segments: [],
@@ -91,6 +92,17 @@ export default function Hero() {
     startY: 0,
     endY: 0,
   });
+
+  useEffect(() => {
+    if (reduceMotion) {
+      setIntroReady(true);
+      return undefined;
+    }
+
+    const revealIntro = () => setIntroReady(true);
+    window.addEventListener('site-preloader-opened', revealIntro);
+    return () => window.removeEventListener('site-preloader-opened', revealIntro);
+  }, [reduceMotion]);
 
   useLayoutEffect(() => {
     const container = timelineRef.current;
@@ -262,7 +274,9 @@ export default function Hero() {
   return (
     <section className="bg-paper text-[#111]">
       <div className="mx-auto w-[min(1240px,calc(100%-3rem))] pb-14 pt-10 max-[700px]:w-[calc(100%-1.5rem)] max-[700px]:pb-10 max-[700px]:pt-8">
-        <div className="flex flex-col items-center justify-center pt-8 text-center">
+        <div className="flex min-h-[170px] flex-col items-center justify-center pt-8 text-center">
+          {introReady && (
+            <>
           <h1 className="inline-block w-fit max-w-full text-3xl font-medium leading-[1.08] tracking-[-0.045em] text-black md:text-4xl">
             <span className="block overflow-hidden pb-1">
               <motion.span
@@ -361,6 +375,8 @@ export default function Hero() {
           >
             Architecture · Interior · Landscape
           </p>
+            </>
+          )}
         </div>
 
         <div className="mt-10 flex items-center justify-center">

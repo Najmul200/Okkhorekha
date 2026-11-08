@@ -36,8 +36,8 @@ export default function SiteIntro() {
       finishTimer = window.setTimeout(() => {
         setLeaving(true);
         removeTimer = window.setTimeout(() => {
+          window.dispatchEvent(new Event('site-preloader-opened'));
           setVisible(false);
-          window.dispatchEvent(new Event('site-preloader-complete'));
         }, CURTAIN_DURATION_MS);
       }, minimumRemaining);
     };
