@@ -45,7 +45,7 @@ export default function Header() {
             className="block"
             initial={reduceMotion ? false : { clipPath: 'inset(0 100% 0 0)' }}
             animate={{ clipPath: 'inset(0 0% 0 0)' }}
-            transition={{ duration: reduceMotion ? 0 : 4, ease: 'easeInOut' }}
+            transition={{ duration: reduceMotion ? 0 : 2, ease: 'easeOut' }}
           >
             <motion.img
               src="/images/AKKHOREKHA.png"
@@ -54,9 +54,9 @@ export default function Header() {
               initial={reduceMotion ? false : { opacity: 0.12, y: 3, filter: 'blur(3px)' }}
               animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
               transition={{
-                duration: reduceMotion ? 0 : 3.8,
-                delay: reduceMotion ? 0 : 0.2,
-                ease: 'easeInOut',
+                duration: reduceMotion ? 0 : 2,
+                delay: reduceMotion ? 0 : 0.05,
+                ease: 'easeOut',
               }}
             />
           </motion.span>
