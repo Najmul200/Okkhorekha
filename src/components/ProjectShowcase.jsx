@@ -1,23 +1,28 @@
 import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { supabase } from '../lib/supabase';
 
 export default function ProjectShowcase({
   title,
   location,
+  year,
   description,
   images,
   index,
   sectionId,
   projectListAnchor = false,
+  id,
+  project,
 }) {
   const [activeImage, setActiveImage] = useState(0);
   const [lightboxIndex, setLightboxIndex] = useState(null);
   const [isGalleryPaused, setIsGalleryPaused] = useState(false);
   const [isGalleryInView, setIsGalleryInView] = useState(false);
+  const [dbImages, setDbImages] = useState([]);
   const galleryRef = useRef(null);
   const touchStartX = useRef(null);
   const suppressClick = useRef(false);
-  const galleryImages = [...new Set(images.filter(Boolean))].slice(0, 6);
+  const galleryImages = [...new Set([...(images || []), ...dbImages].filter(Boolean))].slice(0, 6);
   const contentOnLeft = index % 2 === 0;
   const previousImage = (activeImage - 1 + galleryImages.length) % galleryImages.length;
   const nextImage = (activeImage + 1) % galleryImages.length;
@@ -25,6 +30,32 @@ export default function ProjectShowcase({
     ? [previousImage, activeImage, nextImage]
     : galleryImages.map((_, imageIndex) => imageIndex);
 
+  // Supabase থেকে প্রজেক্টের গ্যালারি ছবি অটো লোড করা
+  useEffect(() => {
+    const projId = project?.id || id;
+    let active = true;
+    if (!projId) {
+      setDbImages([]);
+      return undefined;
+    }
+
+    supabase
+      .from('project_images')
+      .select('image_url')
+      .eq('project_id', projId)
+      .then(({ data, error }) => {
+        if (!active) return;
+        if (error) {
+          console.error('Failed to load project gallery images:', error);
+          return;
+        }
+        setDbImages((data || []).map((img) => img.image_url));
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [project?.id, id]);
   useEffect(() => {
     if (galleryImages.length < 2 || !isGalleryInView || isGalleryPaused || lightboxIndex !== null) return undefined;
 
@@ -132,22 +163,21 @@ export default function ProjectShowcase({
       </h2>
     </motion.div>
   );
-  const projectLocation = (
-    <p
-        className={`pt-1 text-[0.62rem] font-medium uppercase tracking-[0.26em] text-black/45 ${
+  const projectYear = (
+    <div
+      className={`pt-1 text-[0.62rem] font-medium uppercase tracking-[0.26em] text-black/45 ${
         contentOnLeft ? 'order-2' : 'order-1'
       }`}
-      aria-label="Project location"
     >
-      {location}
-    </p>
+      {year && <p aria-label="Project year">{year}</p>}
+    </div>
   );
   const content = (
     <div
       className="col-start-2 row-start-1 flex items-start justify-between gap-4 pb-4 md:col-span-2 md:col-start-2"
     >
       {projectHeading}
-      {projectLocation}
+      {projectYear}
     </div>
   );
 

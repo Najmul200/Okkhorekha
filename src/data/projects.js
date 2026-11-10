@@ -22,9 +22,9 @@ const byYear = (a, b) => {
 };
 
 export const PROJECT_SECTORS = [
-  { key: 'commercial', label: 'Commercial' },
   { key: 'residential', label: 'Residential' },
   { key: 'religious', label: 'Religious' },
+  { key: 'commercial', label: 'Commercial' },
 ];
 
 // 3 ta category (Ready, Ongoing, Complete) + tar bhitorer project gulo

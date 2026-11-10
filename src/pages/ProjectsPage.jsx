@@ -1,11 +1,8 @@
 import { Link } from 'react-router-dom';
 import ProjectShowcase from '../components/ProjectShowcase.jsx';
-import { CATEGORIES, PROJECT_SECTORS } from '../data/projects.js';
+import { PROJECT_SECTORS } from '../data/projects.js';
 import useSeo from '../hooks/useSeo.js';
-
-const projects = CATEGORIES.flatMap((category) =>
-  category.projects.map((project) => ({ ...project, category: category.status }))
-);
+import usePublishedProjects from '../hooks/usePublishedProjects.js';
 
 export default function ProjectsPage() {
   useSeo({
@@ -13,6 +10,21 @@ export default function ProjectsPage() {
     description: 'Explore commercial, residential, and religious projects by অক্ষরেখা.',
     path: '/projects',
   });
+
+  const publishedProjects = usePublishedProjects();
+  const projects = publishedProjects.map((project) => ({
+      ...project,
+      title: project.name,
+      text: project.description,
+      images: project.cover_url ? [project.cover_url] : [],
+      sector: PROJECT_SECTORS.find((sector) =>
+        (project.collections || []).some(
+          (collection) => collection.toLowerCase() === sector.label.toLowerCase()
+        )
+      )?.key,
+      category: 'admin',
+      project,
+    }));
 
   const groupedProjects = PROJECT_SECTORS.map((sector) => ({
     ...sector,
@@ -81,12 +93,14 @@ export default function ProjectsPage() {
                   projectIndex += 1;
                   return (
                     <ProjectShowcase
-                      key={`${project.category}-${project.folder}`}
+                      key={project.project?.id || `${project.category}-${project.folder}`}
                       title={project.title}
                       location={project.location || 'Dhaka'}
+                      year={project.year}
                       description={project.text}
                       images={project.images}
                       index={index}
+                      project={project.project}
                     />
                   );
                 })}

@@ -1,89 +1,9 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
-import { CATEGORIES } from '../data/projects.js';
+import { useLayoutEffect, useRef, useState } from 'react';
 import ProjectShowcase from './ProjectShowcase.jsx';
-
-const readyProjects = CATEGORIES.find((category) => category.key === 'ready')?.projects ?? [];
-const readyProjectByFolder = new Map(readyProjects.map((project) => [project.folder, project]));
-const featuredProjectConfig = [
-  {
-    folder: 'MOHAKHALI DOHS',
-    title: 'Mosque',
-    category: 'religious',
-    categoryAnchor: true,
-    description:
-      'A contemporary sacred architecture project in Dhaka designed around the interplay of natural light and shadow, creating a serene atmosphere.',
-  },
-  {
-    folder: 'bashundhara',
-    title: 'Residential',
-    category: 'residential',
-    categoryAnchor: true,
-    description:
-      'A contemporary residential project in Dhaka, designed to combine practical living with thoughtful architectural details.',
-  },
-  {
-    folder: 'kitchen d5',
-    title: 'Interior Design',
-    category: 'commercial',
-    categoryAnchor: true,
-    description:
-      'A carefully composed interior that balances material, light, and practical everyday use.',
-  },
-  {
-    folder: 'khilkhet full unit',
-    title: 'Architecture',
-    category: 'residential',
-    description:
-      'A residential architecture project shaped by clear planning and thoughtful details.',
-  },
-  {
-    folder: 'duplex reading',
-    title: 'House Interior',
-    category: 'residential',
-    description:
-      'A warm home interior designed around comfort, natural textures, and quiet moments.',
-  },
-  {
-    folder: 'Advocate',
-    title: 'Office Interior',
-    category: 'commercial',
-    description:
-      'A professional interior focused on a calm atmosphere, purposeful details, and everyday functionality.',
-    imageStart: 0,
-    imageEnd: 6,
-  },
-  {
-    folder: 'Advocate',
-    title: 'Advocate Interior',
-    category: 'commercial',
-    description:
-      'An advocate’s interior space bringing together a welcoming character and considered design.',
-    imageStart: 6,
-  },
-];
-const featuredProjects = featuredProjectConfig.flatMap((item) => {
-  const project = readyProjectByFolder.get(item.folder);
-  if (!project) return [];
-
-  const projectImages = item.imageStart === undefined
-    ? project.images
-    : project.images.slice(item.imageStart, item.imageEnd);
-
-  return [{
-    ...item,
-    project,
-    sectionId: item.categoryAnchor ? `project-${item.category}` : undefined,
-    images: [...new Set([
-      ...(item.imageStart === 6 ? [] : [project.cover]),
-      ...projectImages,
-    ].filter(Boolean))],
-  }];
-});
+import usePublishedProjects from '../hooks/usePublishedProjects.js';
 
 export default function Hero() {
-  const reduceMotion = useReducedMotion();
-  const [introReady, setIntroReady] = useState(reduceMotion);
+  const homeProjects = usePublishedProjects({ homeOnly: true });
   const timelineRef = useRef(null);
   const [timeline, setTimeline] = useState({
     segments: [],
@@ -92,17 +12,6 @@ export default function Hero() {
     startY: 0,
     endY: 0,
   });
-
-  useEffect(() => {
-    if (reduceMotion) {
-      setIntroReady(true);
-      return undefined;
-    }
-
-    const revealIntro = () => setIntroReady(true);
-    window.addEventListener('site-preloader-opened', revealIntro);
-    return () => window.removeEventListener('site-preloader-opened', revealIntro);
-  }, [reduceMotion]);
 
   useLayoutEffect(() => {
     const container = timelineRef.current;
@@ -193,7 +102,7 @@ export default function Hero() {
       window.removeEventListener('project-reveal-complete', updateTimeline);
       window.removeEventListener('resize', updateTimeline);
     };
-  }, []);
+  }, [homeProjects]);
 
   useLayoutEffect(() => {
     const container = timelineRef.current;
@@ -271,157 +180,49 @@ export default function Hero() {
     };
   }, [timeline]);
 
+  if (homeProjects.length === 0) return null;
+
   return (
     <section className="bg-paper text-[#111]">
       <div className="mx-auto w-[min(1240px,calc(100%-3rem))] pb-14 pt-10 max-[700px]:w-[calc(100%-1.5rem)] max-[700px]:pb-10 max-[700px]:pt-8">
-        <div className="flex min-h-[170px] flex-col items-center justify-center pt-8 text-center">
-          {introReady && (
-            <>
-          <h1 className="inline-block w-fit max-w-full text-3xl font-medium leading-[1.08] tracking-[-0.045em] text-black md:text-4xl">
-            <span className="block overflow-hidden pb-1">
-              <motion.span
-                className="block"
-                initial={reduceMotion ? false : {
-                  opacity: 0,
-                  y: '110%',
-                  textShadow: '0 0 0 rgba(216, 121, 70, 0)',
-                }}
-                animate={{
-                  opacity: 1,
-                  y: '0%',
-                  textShadow: reduceMotion
-                    ? '0 0 0 rgba(216, 121, 70, 0)'
-                    : ['0 0 0 rgba(216, 121, 70, 0)', '0 0 10px rgba(216, 121, 70, 0.24)'],
-                }}
-                whileHover={reduceMotion ? undefined : { y: -3, color: '#b95e32' }}
-                transition={{
-                  opacity: { duration: 0.55, delay: 0.05 },
-                  y: { duration: 0.65, delay: 0.05, ease: [0.16, 1, 0.3, 1] },
-                  textShadow: {
-                    duration: 2.8,
-                    delay: 0.85,
-                    repeat: Infinity,
-                    repeatType: 'reverse',
-                    ease: 'easeInOut',
-                  },
-                }}
-              >
-                <motion.span
-                  className="block"
-                  animate={reduceMotion ? undefined : { y: [0, -2, 0] }}
-                  transition={{
-                    duration: 2.2,
-                    delay: 0.8,
-                    repeat: Infinity,
-                    ease: 'easeInOut',
-                  }}
-                >
-                  Spaces shaped by thought.
-                </motion.span>
-              </motion.span>
-            </span>
-            <span className="mt-1 block overflow-hidden pb-1">
-              <motion.span
-                className="block"
-                initial={reduceMotion ? false : {
-                  opacity: 0,
-                  y: '110%',
-                  textShadow: '0 0 0 rgba(216, 121, 70, 0)',
-                }}
-                animate={{
-                  opacity: 1,
-                  y: '0%',
-                  textShadow: reduceMotion
-                    ? '0 0 0 rgba(216, 121, 70, 0)'
-                    : ['0 0 0 rgba(216, 121, 70, 0)', '0 0 10px rgba(216, 121, 70, 0.24)'],
-                }}
-                whileHover={reduceMotion ? undefined : { y: -3, color: '#b95e32' }}
-                transition={{
-                  opacity: { duration: 0.55, delay: 0.22 },
-                  y: { duration: 0.65, delay: 0.22, ease: [0.16, 1, 0.3, 1] },
-                  textShadow: {
-                    duration: 2.8,
-                    delay: 1.02,
-                    repeat: Infinity,
-                    repeatType: 'reverse',
-                    ease: 'easeInOut',
-                  },
-                }}
-              >
-                <motion.span
-                  className="block"
-                  animate={reduceMotion ? undefined : { y: [0, -2, 0] }}
-                  transition={{
-                    duration: 2.2,
-                    delay: 1.02,
-                    repeat: Infinity,
-                    ease: 'easeInOut',
-                  }}
-                >
-                  Defined by purpose.
-                </motion.span>
-              </motion.span>
-            </span>
-            <motion.span
+          <div ref={timelineRef} className="relative mx-auto max-w-270">
+            <svg
+              className="pointer-events-none absolute inset-0 z-0 h-full w-full overflow-visible"
+              viewBox={`0 0 ${timeline.width} ${timeline.height}`}
+              preserveAspectRatio="none"
               aria-hidden="true"
-              className="mt-3 block h-0.5 w-full origin-left bg-[#d87946]"
-              initial={{ scaleX: 0 }}
-              animate={{ scaleX: 1 }}
-              transition={{ duration: 1.1, delay: 0.15, ease: [0.22, 1, 0.3, 1] }}
-            />
-          </h1>
-          <p
-            className="mt-6 text-[0.68rem] font-medium uppercase tracking-[0.3em] text-black/50"
-          >
-            Architecture · Interior · Landscape
-          </p>
-            </>
-          )}
-        </div>
-
-        <div className="mt-10 flex items-center justify-center">
-          <span className="text-[0.62rem] font-medium uppercase tracking-[0.4em] text-black/45">
-            Selected work
-          </span>
-        </div>
-
-        <div ref={timelineRef} className="relative mx-auto mt-10 max-w-270">
-          <svg
-            className="pointer-events-none absolute inset-0 z-0 h-full w-full overflow-visible"
-            viewBox={`0 0 ${timeline.width} ${timeline.height}`}
-            preserveAspectRatio="none"
-            aria-hidden="true"
-          >
-            {timeline.segments.map((segment, index) => (
-              <path
-                key={`${segment.kind}-${index}`}
-                data-timeline-segment
-                d={segment.d}
-                fill="none"
-                stroke="#d87946"
-                strokeWidth={segment.kind === 'vertical' ? 4 : 1.5}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeDasharray={segment.length}
-                strokeDashoffset={segment.length}
-              />
-            ))}
-          </svg>
-          <div className="space-y-4 pl-0 md:space-y-0">
-            {featuredProjects.map(({ project, title, description, images, sectionId }, index) => (
-              <ProjectShowcase
-                key={`${project.folder}-${title}`}
-                title={title}
-                location={project.location || 'Dhaka'}
-                description={description}
-                images={images}
-                index={index}
-                sectionId={sectionId}
-                projectListAnchor={index === 0}
-              />
-            ))}
+            >
+              {timeline.segments.map((segment, index) => (
+                <path
+                  key={`${segment.kind}-${index}`}
+                  data-timeline-segment
+                  d={segment.d}
+                  fill="none"
+                  stroke="#d87946"
+                  strokeWidth={segment.kind === 'vertical' ? 4 : 1.5}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeDasharray={segment.length}
+                  strokeDashoffset={segment.length}
+                />
+              ))}
+            </svg>
+            <div className="space-y-4 pl-0 md:space-y-0">
+              {homeProjects.map((project, index) => (
+                <ProjectShowcase
+                  key={project.id}
+                  title={project.name}
+                  location={project.location || 'Dhaka'}
+                  year={project.year}
+                  description={project.description}
+                  images={project.cover_url ? [project.cover_url] : []}
+                  index={index}
+                  projectListAnchor={index === 0}
+                  project={project}
+                />
+              ))}
+            </div>
           </div>
-        </div>
       </div>
     </section>
   );

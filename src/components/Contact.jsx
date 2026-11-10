@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import emailjs from '@emailjs/browser';
 import { SITE } from '../data/content.js';
+import { supabase } from '../lib/supabase';
 import useSeo from '../hooks/useSeo.js';
 
 export default function Contact() {
@@ -46,18 +47,6 @@ export default function Contact() {
       return;
     }
 
-    const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-    const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
-
-    if (!serviceId || !templateId || !publicKey) {
-      console.error('EmailJS configuration is missing.');
-      setFeedback(
-        'Email sending is not configured for this site. Add the EmailJS environment variables to the hosting settings and redeploy.'
-      );
-      return;
-    }
-
     // ==========================================
     // Start sending
     // ==========================================
@@ -65,7 +54,24 @@ export default function Contact() {
     setSending(true);
     setFeedback('');
 
+    let inboxSaved = false;
     try {
+      const { error: inboxError } = await supabase.from('contact_messages').insert({
+        name: formData.name,
+        email: formData.email,
+        subject: formData.title,
+        message: formData.message,
+      });
+      if (inboxError) throw new Error(`Could not save your inquiry: ${inboxError.message}`);
+      inboxSaved = true;
+
+      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+      const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+      if (!serviceId || !templateId || !publicKey) {
+        throw new Error('Email notification is not configured.');
+      }
+
       // ========================================
       // Data sent to EmailJS
       // ========================================
@@ -93,9 +99,7 @@ export default function Contact() {
 
       form.reset();
 
-      setFeedback(
-        'Thank you. Your inquiry has been sent successfully.'
-      );
+      setFeedback('Thank you. Your inquiry has been sent successfully.');
     } catch (error) {
       const errorMessage = typeof error?.text === 'string'
         ? error.text
@@ -108,9 +112,9 @@ export default function Contact() {
         message: errorMessage,
       });
 
-      setFeedback(
-        `Your inquiry could not be sent (${errorMessage}). Please check the EmailJS template recipient and allowed origins.`
-      );
+      setFeedback(inboxSaved
+        ? `Your inquiry was saved to our admin inbox, but the email notification failed (${errorMessage}).`
+        : errorMessage);
     } finally {
       setSending(false);
     }
@@ -193,6 +197,7 @@ export default function Contact() {
                 type="text"
                 id="inquiryName"
                 name="name"
+                maxLength={120}
                 className="w-full rounded-sm border border-neutral-300 bg-neutral-50 px-4 py-3 text-ink outline-none placeholder:text-neutral-600 focus:border-black focus:ring-2 focus:ring-black/15"
                 placeholder="Your Name"
                 aria-label="Your name"
@@ -207,6 +212,7 @@ export default function Contact() {
                 type="email"
                 id="inquiryEmail"
                 name="email"
+                maxLength={254}
                 className="w-full rounded-sm border border-neutral-300 bg-neutral-50 px-4 py-3 text-ink outline-none placeholder:text-neutral-600 focus:border-black focus:ring-2 focus:ring-black/15"
                 placeholder="Your Email"
                 aria-label="Your email address"
@@ -221,6 +227,7 @@ export default function Contact() {
                 type="text"
                 id="inquiryTitle"
                 name="title"
+                maxLength={200}
                 className="w-full rounded-sm border border-neutral-300 bg-neutral-50 px-4 py-3 text-ink outline-none placeholder:text-neutral-600 focus:border-black focus:ring-2 focus:ring-black/15"
                 placeholder="Subject"
                 aria-label="Subject"
@@ -233,6 +240,7 @@ export default function Contact() {
               <textarea
                 id="inquiryMessage"
                 name="message"
+                maxLength={10000}
                 className="w-full rounded-sm border border-neutral-300 bg-neutral-50 px-4 py-3 text-ink outline-none placeholder:text-neutral-600 focus:border-black focus:ring-2 focus:ring-black/15"
                 placeholder="Tell us about your project"
                 aria-label="Tell us about your project"

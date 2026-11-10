@@ -31,11 +31,15 @@ Each review stores its project ID and title, author name, review text, rating, a
 ## EmailJS setup
 
 1. Create an [EmailJS](https://www.emailjs.com/) account, add an email service, and connect the inbox where inquiries should arrive.
-2. Create an email template. Set **To email** to `{{to_email}}` (do not hard-code a recipient address). Use `{{from_name}}`, `{{reply_to}}`, and `{{message}}` in the template body. Set the template's reply-to address to `{{reply_to}}`.
+2. Create an email template. Set **To email** to `{{to_email}}` (do not hard-code a recipient address), **Subject** to `{{title}}`, and **Reply To** to `{{reply_to}}`. Use `{{from_name}}`, `{{title}}`, and `{{message}}` in the template body. The same template delivers contact notifications and admin replies.
 3. Copy the Service ID, Template ID, and Public Key from EmailJS into `VITE_EMAILJS_SERVICE_ID`, `VITE_EMAILJS_TEMPLATE_ID`, and `VITE_EMAILJS_PUBLIC_KEY` in the root `.env` file.
 4. Restart the Vite dev server. The contact form sends inquiries to `akkhorekhaarchitects@gmail.com`, configured in `src/data/content.js`.
 
 The EmailJS Public Key is intended for browser use. Keep MongoDB credentials only in `server/.env`.
+
+## Admin inbox
+
+Run `supabase/migrations/20261110000001_contact_inbox.sql` once in the Supabase SQL Editor. Website contact form submissions are saved in `contact_messages` and email the studio using the EmailJS configuration above. In `/admin`, open **Inbox** to read submissions and reply; replies are emailed to the sender and saved in the thread. Inbox messages are readable only by signed-in users, while visitors can only submit new contact messages.
 
 ## WhatsApp Contact
 
@@ -44,6 +48,10 @@ The floating WhatsApp icon opens a prefilled chat to the number in `SITE.whatsap
 ## Add a project
 
 Create a folder for the project under `src/assets/projects/Ready Project/`, `Ongoing Project/`, or `Complete Project/` and place its images there. The folder name becomes the project title. Add its `sector` (`commercial`, `residential`, or `religious`) and optional details in `PROJECT_INFO` in `src/data/content.js` so it appears in the right group on the Projects page. WebP copies are generated automatically before dev and build; original project images remain unchanged.
+
+## Edit About Us content
+
+Run `supabase/migrations/20261110000000_about_content.sql` in the Supabase SQL Editor once to create the About Us content table and its public-read/authenticated-write policies. Then sign in at `/admin`, choose **About Us**, edit the fields, and select **Save and Publish**. The homepage About section and `/about` page read the same content and receive live updates.
 
 ## Production deployment
 

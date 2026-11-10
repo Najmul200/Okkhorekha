@@ -6,17 +6,17 @@ export default function Footer() {
     <footer className="mt-0 bg-black py-12 text-white/70">
       <div className="mx-auto w-[min(1280px,calc(100%-3rem))] max-[700px]:w-[calc(100%-2rem)] max-[360px]:w-[calc(100%-1.5rem)]">
         <div className="mb-7 grid grid-cols-[1.2fr_1fr_1fr] items-start gap-7 max-[900px]:grid-cols-1">
-          <div>
+          <div className="max-[900px]:order-3">
             <h3 className="mb-3 font-display text-base font-medium text-white">{SITE.name}</h3>
             <p className="text-sm text-white/60">Build by Najmul Islam</p>
           </div>
-          <div>
+          <div className="max-[900px]:order-1">
             <h3 className="mb-3 font-display text-base font-medium text-white">Quick Links</h3>
             <Link className="mb-2 block text-white/70 transition-colors hover:text-white hover:underline" to="/about">About Us</Link>
             <Link className="mb-2 block text-white/70 transition-colors hover:text-white hover:underline" to="/#projects">Projects</Link>
             <Link className="mb-2 block text-white/70 transition-colors hover:text-white hover:underline" to="/contact">Contact</Link>
           </div>
-          <div>
+          <div className="max-[900px]:order-2">
             <h3 className="mb-3 font-display text-base font-medium text-white">Contact</h3>
             <p className="mb-2 block text-white/70">{SITE.address}</p>
             <a className="mb-2 block text-white/70 transition-colors hover:text-white hover:underline" href={SITE.phoneHref}>{SITE.phone}</a>

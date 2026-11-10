@@ -16,9 +16,11 @@
 
   html {
     scroll-behavior: smooth;
+    overflow-x: clip;
   }
 
   body {
+    overflow-x: clip;
     background: var(--color-paper);
     color: var(--color-ink);
     font-family: "Montserrat", "Noto Sans Bengali", sans-serif;
@@ -38,6 +40,14 @@
     outline: 2px solid #111;
     outline-offset: 3px;
   }
+}
+button {
+  cursor: pointer;
+  transition: opacity 0.2s ease, background-color 0.2s ease;
+}
+
+button:hover {
+  opacity: 0.9;
 }
 
 @layer utilities {
