@@ -49,6 +49,8 @@ The floating WhatsApp icon opens a prefilled chat to the number in `SITE.whatsap
 
 Create a folder for the project under `src/assets/projects/Ready Project/`, `Ongoing Project/`, or `Complete Project/` and place its images there. The folder name becomes the project title. Add its `sector` (`commercial`, `residential`, or `religious`) and optional details in `PROJECT_INFO` in `src/data/content.js` so it appears in the right group on the Projects page. WebP copies are generated automatically before dev and build; original project images remain unchanged.
 
+Images uploaded from `/admin` are resized to a maximum 1920-pixel edge and compressed to WebP when that reduces their size. Public project galleries load images lazily to reduce initial page loading; previously uploaded originals are not changed automatically.
+
 ## Edit About Us content
 
 Run `supabase/migrations/20261110000000_about_content.sql` in the Supabase SQL Editor once to create the About Us content table and its public-read/authenticated-write policies. Then sign in at `/admin`, choose **About Us**, edit the fields, and select **Save and Publish**. The homepage About section and `/about` page read the same content and receive live updates.

@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
+import optimizeProjectImage from '../lib/optimizeProjectImage.js';
+
+const MAX_GALLERY_IMAGES = 40;
 
 export default function ProjectForm({ projectId = null, onBack }) {
   const [id, setId] = useState(projectId);
@@ -19,6 +22,7 @@ export default function ProjectForm({ projectId = null, onBack }) {
   const [galleryImages, setGalleryImages] = useState([]);
   const [pastedUrl, setPastedUrl] = useState('');
   const [uploading, setUploading] = useState(false);
+  const [addingUrl, setAddingUrl] = useState(false);
 
   // ক্যাটাগরি সিরিয়াল: Residential -> Commercial -> Religious
   const availableCollections = ['Residential', 'Commercial', 'Religious'];
@@ -107,14 +111,22 @@ export default function ProjectForm({ projectId = null, onBack }) {
   // 📸 আপলোড লজিক (অটো কাভার সেট সুবিধা সহ)
   const handleFileUpload = async (e) => {
     const files = Array.from(e.target.files || []);
-    if (files.length === 0 || !id) return;
+    if (files.length === 0 || !id || uploading || addingUrl) return;
+
+    const remainingSlots = MAX_GALLERY_IMAGES - galleryImages.length;
+    if (files.length > remainingSlots) {
+      alert(`This project can have up to ${MAX_GALLERY_IMAGES} gallery images. You can add ${Math.max(remainingSlots, 0)} more.`);
+      e.target.value = '';
+      return;
+    }
 
     setUploading(true);
 
     try {
-      const uploadPromises = files.map(async (file, index) => {
-        const fileExt = file.name.split('.').pop();
-        const fileName = `${id}/${Date.now()}_${index}_${Math.random().toString(36).substring(2, 7)}.${fileExt}`;
+      const newImageRecords = [];
+      for (const [index, originalFile] of files.entries()) {
+        const file = await optimizeProjectImage(originalFile);
+        const fileName = `${id}/${Date.now()}_${index}_${Math.random().toString(36).substring(2, 7)}_${file.name}`;
 
         const { error: uploadErr } = await supabase.storage
           .from('project-images')
@@ -123,10 +135,8 @@ export default function ProjectForm({ projectId = null, onBack }) {
         if (uploadErr) throw uploadErr;
 
         const { data: urlData } = supabase.storage.from('project-images').getPublicUrl(fileName);
-        return { project_id: id, image_url: urlData.publicUrl };
-      });
-
-      const newImageRecords = await Promise.all(uploadPromises);
+        newImageRecords.push({ project_id: id, image_url: urlData.publicUrl });
+      }
 
       const { error: dbErr } = await supabase
         .from('project_images')
@@ -156,18 +166,27 @@ export default function ProjectForm({ projectId = null, onBack }) {
   };
 
   const handleAddUrlImage = async () => {
-    if (!pastedUrl.trim() || !id) return;
+    if (!pastedUrl.trim() || !id || uploading || addingUrl) return;
+    if (galleryImages.length >= MAX_GALLERY_IMAGES) {
+      alert(`This project has reached the ${MAX_GALLERY_IMAGES}-image gallery limit.`);
+      return;
+    }
+
     const newUrl = pastedUrl.trim();
-    const { error } = await supabase
-      .from('project_images')
-      .insert([{ project_id: id, image_url: newUrl }]);
-    
-    if (!error) {
+    setAddingUrl(true);
+    try {
+      const { error } = await supabase
+        .from('project_images')
+        .insert([{ project_id: id, image_url: newUrl }]);
+
+      if (error) throw error;
       if (!coverUrl) setCoverUrl(newUrl);
-      fetchGallery(id);
+      await fetchGallery(id);
       setPastedUrl('');
-    } else {
-      alert('Failed to save image URL');
+    } catch (err) {
+      alert('Failed to save image URL: ' + err.message);
+    } finally {
+      setAddingUrl(false);
     }
   };
 
@@ -342,7 +361,7 @@ export default function ProjectForm({ projectId = null, onBack }) {
       {/* GALLERY SECTION */}
       <div className="mt-12 pt-8 border-t border-gray-200">
         <h3 className="text-[11px] font-bold uppercase tracking-wider text-gray-500 mb-4">
-          GALLERY ({galleryImages.length})
+          GALLERY ({galleryImages.length}/{MAX_GALLERY_IMAGES})
         </h3>
 
         {!id ? (
@@ -360,7 +379,7 @@ export default function ProjectForm({ projectId = null, onBack }) {
                   accept="image/*"
                   multiple
                   className="hidden"
-                  disabled={uploading}
+                  disabled={uploading || addingUrl || galleryImages.length >= MAX_GALLERY_IMAGES}
                 />
               </label>
 
@@ -369,17 +388,25 @@ export default function ProjectForm({ projectId = null, onBack }) {
                 placeholder="...or paste image URL"
                 value={pastedUrl}
                 onChange={(e) => setPastedUrl(e.target.value)}
+                disabled={uploading || addingUrl || galleryImages.length >= MAX_GALLERY_IMAGES}
                 className="w-72 max-w-full rounded border border-gray-300 p-2 text-sm focus:border-[#c65f20] focus:outline-none"
               />
 
               <button
                 type="button"
                 onClick={handleAddUrlImage}
-                className="bg-[#c65f20] hover:bg-[#a84d18] text-white px-4 py-2 text-xs font-bold uppercase tracking-wider cursor-pointer transition rounded"
+                disabled={uploading || addingUrl || galleryImages.length >= MAX_GALLERY_IMAGES}
+                className="bg-[#c65f20] hover:bg-[#a84d18] text-white px-4 py-2 text-xs font-bold uppercase tracking-wider cursor-pointer transition rounded disabled:cursor-not-allowed disabled:opacity-50"
               >
-                ADD URL
+                {addingUrl ? 'ADDING URL...' : 'ADD URL'}
               </button>
             </div>
+
+            {galleryImages.length >= MAX_GALLERY_IMAGES && (
+              <p className="mb-4 text-sm text-amber-700">
+                This project has reached the {MAX_GALLERY_IMAGES}-image limit.
+              </p>
+            )}
 
             {galleryImages.length === 0 ? (
               <p className="text-sm text-gray-400">No gallery images yet.</p>
@@ -387,7 +414,7 @@ export default function ProjectForm({ projectId = null, onBack }) {
               <div className="grid grid-cols-4 gap-4 max-[900px]:grid-cols-3 max-[700px]:grid-cols-2 max-[380px]:grid-cols-1">
                 {galleryImages.map((img) => (
                   <div key={img.id} className="relative group border border-gray-200 rounded overflow-hidden">
-                    <img src={img.image_url} alt="Gallery" className="w-full h-32 object-cover" />
+                    <img src={img.image_url} alt="Gallery" loading="lazy" decoding="async" className="h-32 w-full object-cover" />
                     
                     {/* SET AS COVER BUTTON */}
                     <button

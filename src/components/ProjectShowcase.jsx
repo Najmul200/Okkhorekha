@@ -22,7 +22,7 @@ export default function ProjectShowcase({
   const galleryRef = useRef(null);
   const touchStartX = useRef(null);
   const suppressClick = useRef(false);
-  const galleryImages = [...new Set([...(images || []), ...dbImages].filter(Boolean))].slice(0, 6);
+  const galleryImages = [...new Set([...(images || []), ...dbImages].filter(Boolean))];
   const contentOnLeft = index % 2 === 0;
   const previousImage = (activeImage - 1 + galleryImages.length) % galleryImages.length;
   const nextImage = (activeImage + 1) % galleryImages.length;
@@ -255,7 +255,8 @@ export default function ProjectShowcase({
                 <img
                   src={galleryImages[imageIndex]}
                   alt={`${title} project view ${imageIndex + 1}`}
-                  loading={imageIndex < 3 ? 'eager' : 'lazy'}
+                  loading={index === 0 && imageIndex === activeImage ? 'eager' : 'lazy'}
+                  fetchPriority={index === 0 && imageIndex === activeImage ? 'high' : 'auto'}
                   draggable="false"
                   className="h-full w-full object-cover"
                 />
@@ -385,6 +386,7 @@ export default function ProjectShowcase({
             <img
               src={galleryImages[lightboxIndex]}
               alt={`${title} project view ${lightboxIndex + 1}`}
+              fetchPriority="high"
               className="max-h-[78vh] w-full rounded-md object-contain"
             />
             <figcaption className="text-center text-sm text-white/75">

@@ -67,7 +67,7 @@ export default function ProjectList({ onNewProject, onEditProject }) {
               <td className="py-4 text-gray-400 font-mono">{String(index + 1).padStart(2, '0')}</td>
               <td className="py-4">
                 {item.cover_url ? (
-                  <img src={item.cover_url} alt="" className="w-12 h-12 object-cover border border-gray-200" />
+                  <img src={item.cover_url} alt="" loading="lazy" decoding="async" className="h-12 w-12 border border-gray-200 object-cover" />
                 ) : (
                   <div className="w-12 h-12 bg-gray-100 flex items-center justify-center text-[10px] text-gray-400">
                     No Image
