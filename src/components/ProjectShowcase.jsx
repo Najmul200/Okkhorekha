@@ -156,7 +156,7 @@ export default function ProjectShowcase({
       >
         {String(index + 1).padStart(2, '0')}
       </span>
-      <h2 className={`min-w-0 wrap-anywhere text-2xl font-medium tracking-[-0.04em] text-black md:text-3xl ${
+      <h2 className={`min-w-0 wrap-anywhere text-2xl font-normal tracking-[-0.04em] text-black md:text-3xl ${
         contentOnLeft ? 'order-2' : 'order-1'
       }`}>
         {title}
@@ -272,10 +272,7 @@ export default function ProjectShowcase({
         </AnimatePresence>
       </div>
 
-      <div className="pointer-events-none absolute inset-x-4 bottom-4 z-10 flex items-end justify-between gap-3 text-white md:inset-x-5 md:bottom-5">
-        <span className="text-xs font-medium uppercase tracking-[0.15em] md:text-sm">
-          {title} <span className="text-white/75">· {location}</span>
-        </span>
+      <div className="pointer-events-none absolute inset-x-4 bottom-4 z-10 flex items-end justify-end gap-3 text-white md:inset-x-5 md:bottom-5">
         {galleryImages.length > 1 && (
           <span className="shrink-0 text-xs tabular-nums text-white/85">
             {String(activeImage + 1).padStart(2, '0')} / {String(galleryImages.length).padStart(2, '0')}
@@ -337,15 +334,20 @@ export default function ProjectShowcase({
       >
         {content}
         {gallery}
+        {location && (
+          <p className="col-start-2 col-end-3 row-start-3 mt-3 w-full min-w-0 text-xs font-medium uppercase tracking-[0.15em] text-black md:col-end-4">
+            {location}
+          </p>
+        )}
         {description && (
           <motion.div
             initial={{ opacity: 0, y: 0 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.6, ease: 'easeOut' }}
-            className="col-start-2 row-start-3 mt-4 max-w-2xl pb-2"
+            className="col-start-2 col-end-3 row-start-4 mt-2 w-full min-w-0 pb-2 md:col-end-4"
           >
-            <p data-timeline-description className="text-sm leading-7 text-black/60">
+            <p data-timeline-description className="w-full text-sm leading-7 text-black/60">
               {description}
             </p>
           </motion.div>

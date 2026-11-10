@@ -5,8 +5,8 @@
   --color-surface: #f3f3f3;
   --color-ink: #0b0b0b;
   --color-muted: #514e4b;
-  --font-sans: "Montserrat", "Noto Sans Bengali", sans-serif;
-  --font-display: "Montserrat", "Noto Sans Bengali", sans-serif;
+  --font-sans: "Montserrat", "Kalpurush", "Noto Sans Bengali", sans-serif;
+  --font-display: "Montserrat", "Kalpurush", "Noto Sans Bengali", sans-serif;
 }
 
 @layer base {
@@ -23,7 +23,7 @@
     overflow-x: clip;
     background: var(--color-paper);
     color: var(--color-ink);
-    font-family: "Montserrat", "Noto Sans Bengali", sans-serif;
+    font-family: "Montserrat", "Kalpurush", "Noto Sans Bengali", sans-serif;
     font-weight: 600;
     line-height: 1.6;
     text-rendering: optimizeLegibility;
