@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 @theme {
-  --color-paper: #e6e6e6;
-  --color-surface: #f3f3f3;
+  --color-paper: #c9c9c9;
+  --color-surface: #e0e0e0;
   --color-ink: #0b0b0b;
   --color-muted: #514e4b;
   --font-sans: "Montserrat", "Kalpurush", "Noto Sans Bengali", sans-serif;
@@ -29,6 +29,31 @@
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  img,
+  video,
+  canvas,
+  svg {
+    max-width: 100%;
+  }
+
+  input,
+  textarea,
+  select,
+  button {
+    font: inherit;
+  }
+
+  input,
+  textarea,
+  select {
+    max-width: 100%;
+  }
+
+  button,
+  a {
+    touch-action: manipulation;
   }
 
   a {
@@ -201,6 +226,25 @@ button:hover {
   }
 }
 
+@media (max-width: 380px) {
+  .admin-sidebar {
+    padding: 12px !important;
+  }
+
+  .admin-nav {
+    gap: 8px;
+  }
+
+  .admin-nav button {
+    padding: 10px 12px !important;
+    font-size: 12px !important;
+  }
+
+  .admin-modal-form {
+    padding: 16px !important;
+  }
+}
+
 .motion-ready [data-reveal] {
   opacity: 0;
   transform: translateY(18px);
@@ -225,6 +269,11 @@ button:hover {
 @keyframes whatsapp-float {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-3px); }
+}
+
+@keyframes chat-ring {
+  0% { opacity: 0.75; transform: scale(0.92); }
+  75%, 100% { opacity: 0; transform: scale(1.28); }
 }
 
 @media (prefers-reduced-motion: reduce) {

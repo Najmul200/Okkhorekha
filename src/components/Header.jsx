@@ -53,8 +53,8 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-black text-white">
-      <div className="relative z-1 mx-auto flex w-[min(1280px,calc(100%-3rem))] items-center justify-between gap-4 py-2 max-[840px]:grid max-[840px]:min-h-19.75 max-[840px]:grid-cols-[minmax(0,1fr)_44px] max-[840px]:py-[0.55rem] max-[360px]:min-h-18">
-        <Link to="/" className="inline-flex flex-auto items-center max-[840px]:col-start-1" aria-label={SITE.name} onClick={() => setOpen(false)}>
+      <div className="relative z-1 mx-auto flex w-[min(1280px,calc(100%-3rem))] items-center justify-between gap-4 py-2 max-[960px]:grid max-[960px]:min-h-19.75 max-[960px]:grid-cols-[minmax(0,1fr)_44px] max-[960px]:py-[0.55rem] max-[700px]:w-[calc(100%-2rem)] max-[360px]:w-[calc(100%-1.5rem)] max-[360px]:min-h-18">
+        <Link to="/" className="inline-flex min-w-0 flex-auto items-center max-[960px]:col-start-1" aria-label={SITE.name} onClick={() => setOpen(false)}>
           <motion.span
             className="block"
             initial={reduceMotion ? false : { clipPath: 'inset(0 100% 0 0)' }}
@@ -103,7 +103,7 @@ export default function Header() {
                 <motion.img
                   src="/images/AKKHOREKHA.png"
                   alt={SITE.name}
-                  className="relative z-10 block h-19.5 w-auto max-w-70 object-contain max-[840px]:h-15 max-[840px]:max-w-55 max-[360px]:h-13"
+                  className="relative z-10 block h-19.5 w-auto max-w-70 object-contain max-[960px]:h-15 max-[960px]:max-w-55 max-[360px]:h-13"
                   initial={reduceMotion ? false : { opacity: 0.12, y: 3, filter: 'blur(3px)' }}
                   animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                   transition={{
@@ -139,7 +139,7 @@ export default function Header() {
           </motion.span>
         </Link>
         <button
-          className="hidden h-11 w-11 items-center justify-center rounded-sm border border-white/35 bg-transparent text-xl text-white transition-colors hover:bg-white/15 max-[840px]:col-start-2 max-[840px]:flex max-[840px]:justify-self-end"
+          className="hidden h-11 w-11 items-center justify-center rounded-sm border border-white/35 bg-transparent text-xl text-white transition-colors hover:bg-white/15 max-[960px]:col-start-2 max-[960px]:flex max-[960px]:justify-self-end"
           aria-label={open ? 'Close navigation menu' : 'Open navigation menu'}
           aria-expanded={open}
           aria-controls="navLinks"
@@ -147,13 +147,13 @@ export default function Header() {
         >
           {open ? '×' : '☰'}
         </button>
-        <nav className="max-[840px]:absolute max-[840px]:right-0 max-[840px]:top-[calc(100%+0.5rem)] max-[840px]:z-80 max-[840px]:w-[min(280px,calc(100vw-2rem))]" aria-label="Main navigation">
-          <ul className={`flex list-none gap-1 max-[840px]:static max-[840px]:max-h-[calc(100svh-100px)] max-[840px]:w-full max-[840px]:flex-col max-[840px]:items-stretch max-[840px]:gap-1 max-[840px]:overflow-y-auto max-[840px]:rounded max-[840px]:border max-[840px]:border-white/20 max-[840px]:bg-black max-[840px]:p-2 max-[840px]:shadow-xl ${open ? 'max-[840px]:flex' : 'max-[840px]:hidden'}`} id="navLinks">
+        <nav className="max-[960px]:absolute max-[960px]:right-0 max-[960px]:top-[calc(100%+0.5rem)] max-[960px]:z-80 max-[960px]:w-[min(280px,calc(100vw-2rem))]" aria-label="Main navigation">
+          <ul className={`flex list-none gap-1 max-[960px]:static max-[960px]:max-h-[calc(100svh-100px)] max-[960px]:w-full max-[960px]:flex-col max-[960px]:items-stretch max-[960px]:gap-1 max-[960px]:overflow-y-auto max-[960px]:rounded max-[960px]:border max-[960px]:border-white/20 max-[960px]:bg-black max-[960px]:p-2 max-[960px]:shadow-xl ${open ? 'max-[960px]:flex' : 'max-[960px]:hidden'}`} id="navLinks">
             {NAV_LINKS.map((l) => (
               <li key={l.href}>
                 <Link
                   to={l.href}
-                  className={`relative rounded-sm px-3 py-2 text-white/75 transition-colors duration-200 after:absolute after:bottom-1 after:left-3 after:right-3 after:h-px after:origin-center after:scale-x-0 after:bg-white after:transition-transform hover:bg-white/10 hover:text-white hover:after:scale-x-100 max-[840px]:block max-[840px]:w-full max-[840px]:px-4 max-[840px]:py-3 ${isActive(l) ? 'active bg-white/10 text-white after:scale-x-100' : ''}`}
+                  className={`relative rounded-sm px-3 py-2 text-white/75 transition-colors duration-200 after:absolute after:bottom-1 after:left-3 after:right-3 after:h-px after:origin-center after:scale-x-0 after:bg-white after:transition-transform hover:bg-white/10 hover:text-white hover:after:scale-x-100 max-[960px]:block max-[960px]:w-full max-[960px]:px-4 max-[960px]:py-3 ${isActive(l) ? 'active bg-white/10 text-white after:scale-x-100' : ''}`}
                   onClick={() => setOpen(false)}
                 >
                   {l.label}
@@ -163,7 +163,7 @@ export default function Header() {
             <li ref={searchMenuRef} className="relative">
               <button
                 type="button"
-                className="flex items-center gap-2 rounded-full border border-white/40 bg-black px-4 py-2 text-xs font-semibold tracking-[0.14em] text-white transition-colors duration-200 hover:bg-white/10 max-[840px]:w-full max-[840px]:justify-center max-[840px]:py-3"
+                className="flex items-center gap-2 rounded-full border border-white/40 bg-black px-4 py-2 text-xs font-semibold tracking-[0.14em] text-white transition-colors duration-200 hover:bg-white/10 max-[960px]:w-full max-[960px]:justify-center max-[960px]:py-3"
                 aria-label="Search projects by category"
                 aria-expanded={searchOpen}
                 aria-controls="projectSearchMenu"
@@ -188,7 +188,7 @@ export default function Header() {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: -6, scale: 0.98 }}
                     transition={{ duration: 0.2, ease: 'easeOut' }}
-                    className="absolute right-0 top-full z-[90] mt-2 flex w-56 origin-top-right flex-col gap-1 rounded-xl border border-neutral-800 bg-neutral-900 p-3 text-left shadow-xl max-[840px]:static max-[840px]:mt-1 max-[840px]:w-full"
+                    className="absolute right-0 top-full z-[90] mt-2 flex w-56 origin-top-right flex-col gap-1 rounded-xl border border-neutral-800 bg-neutral-900 p-3 text-left shadow-xl max-[960px]:static max-[960px]:mt-1 max-[960px]:w-full"
                     aria-label="Search project categories"
                   >
                     {PROJECT_SECTORS.map((category, index) => (

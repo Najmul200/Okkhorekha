@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
-<div className="p-8 bg-white min-h-screen font-sans w-full"></div>
+<div className="p-8 bg-paper min-h-screen font-sans w-full"></div>
 
 
 export default function ProjectList({ onNewProject, onEditProject }) {
@@ -35,7 +35,7 @@ export default function ProjectList({ onNewProject, onEditProject }) {
   };
 
   return (
-    <div className="min-h-screen bg-white p-8 font-sans max-[700px]:p-4">
+    <div className="min-h-screen bg-paper p-8 font-sans max-[700px]:p-4">
       <div className="mb-6 flex items-center justify-between gap-4 max-[480px]:items-start">
         <div>
           <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">{projects.length} TOTAL</span>

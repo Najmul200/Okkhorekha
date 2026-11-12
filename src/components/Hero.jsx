@@ -1,9 +1,16 @@
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 import ProjectShowcase from './ProjectShowcase.jsx';
 import usePublishedProjects from '../hooks/usePublishedProjects.js';
 
 export default function Hero() {
-  const homeProjects = usePublishedProjects({ homeOnly: true });
+  const reduceMotion = useReducedMotion();
+  const [introReady, setIntroReady] = useState(false);
+  const homeProjects = usePublishedProjects({ includeUnpublished: true });
+  const [visibleProjectCount, setVisibleProjectCount] = useState(2);
+  const visibleProjects = homeProjects.slice(0, visibleProjectCount);
+  const loadMoreRef = useRef(null);
+  const drawnLengthRef = useRef(0);
   const timelineRef = useRef(null);
   const [timeline, setTimeline] = useState({
     segments: [],
@@ -12,6 +19,32 @@ export default function Hero() {
     startY: 0,
     endY: 0,
   });
+
+  useEffect(() => {
+    if (!document.querySelector('[data-site-preloader]')) {
+      setIntroReady(true);
+      return undefined;
+    }
+
+    const revealIntro = () => setIntroReady(true);
+    window.addEventListener('site-preloader-opened', revealIntro, { once: true });
+    return () => window.removeEventListener('site-preloader-opened', revealIntro);
+  }, []);
+
+  useEffect(() => {
+    if (visibleProjectCount >= homeProjects.length) return undefined;
+
+    const loadNextProjects = () => {
+      const sentinel = loadMoreRef.current;
+      if (!sentinel || window.scrollY <= 0) return;
+      if (sentinel.getBoundingClientRect().top > window.innerHeight) return;
+
+      setVisibleProjectCount((count) => Math.min(count + 2, homeProjects.length));
+    };
+
+    window.addEventListener('scroll', loadNextProjects, { passive: true });
+    return () => window.removeEventListener('scroll', loadNextProjects);
+  }, [homeProjects.length, visibleProjectCount]);
 
   useLayoutEffect(() => {
     const container = timelineRef.current;
@@ -102,30 +135,35 @@ export default function Hero() {
       window.removeEventListener('project-reveal-complete', updateTimeline);
       window.removeEventListener('resize', updateTimeline);
     };
-  }, [homeProjects]);
+  }, [homeProjects, visibleProjectCount]);
 
   useLayoutEffect(() => {
     const container = timelineRef.current;
     if (!container || timeline.segments.length === 0) return undefined;
 
     const totalLength = timeline.segments.reduce((total, segment) => total + segment.length, 0);
+    const preservedDrawnLength = Math.min(drawnLengthRef.current, totalLength);
+    let progressFloor = preservedDrawnLength / totalLength;
+    let lastScrollY = window.scrollY;
     let frame = 0;
-    let currentProgress = 0;
-    let targetProgress = 0;
+    let currentProgress = progressFloor;
+    let targetProgress = progressFloor;
     let previousTime = 0;
     let initialized = false;
 
     const drawProgress = (progress) => {
       let remainingLength = totalLength * progress;
+      let totalDrawnLength = 0;
 
       container.querySelectorAll('[data-timeline-segment]').forEach((path, index) => {
         const segment = timeline.segments[index];
         const drawnLength = Math.max(0, Math.min(segment.length, remainingLength));
         path.style.strokeDashoffset = String(segment.length - drawnLength);
         remainingLength -= drawnLength;
+        totalDrawnLength += drawnLength;
       });
+      drawnLengthRef.current = totalDrawnLength;
     };
-
     const animateProgress = (time) => {
       frame = 0;
       const elapsed = previousTime ? Math.min(time - previousTime, 64) : 16;
@@ -151,10 +189,13 @@ export default function Hero() {
       const documentTop = bounds.top + window.scrollY;
       const start = Math.max(0, documentTop + timeline.startY - viewportHeight * 0.7);
       const end = documentTop + timeline.endY - viewportHeight * 0.96;
-      targetProgress = Math.max(
+      const scrollProgress = Math.max(
         0,
         Math.min(1, (window.scrollY - start) / Math.max(end - start, 1))
       );
+      if (window.scrollY < lastScrollY) progressFloor = scrollProgress;
+      targetProgress = Math.max(progressFloor, scrollProgress);
+      lastScrollY = window.scrollY;
 
       if (!initialized || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         cancelAnimationFrame(frame);
@@ -180,12 +221,50 @@ export default function Hero() {
     };
   }, [timeline]);
 
-  if (homeProjects.length === 0) return null;
 
   return (
     <section className="bg-paper text-[#111]">
       <div className="mx-auto w-[min(1240px,calc(100%-3rem))] pb-14 pt-10 max-[700px]:w-[calc(100%-1.5rem)] max-[700px]:pb-10 max-[700px]:pt-8">
-          <div ref={timelineRef} className="relative mx-auto max-w-270">
+        <div className="flex min-h-[170px] flex-col items-center justify-center pt-8 text-center">
+          {introReady && (
+            <>
+              <h1 className="inline-block w-fit max-w-full text-3xl font-medium leading-[1.08] tracking-[-0.045em] text-black md:text-4xl">
+                <span className="block overflow-hidden pb-1">
+                  <motion.span
+                    className="block"
+                    initial={reduceMotion ? false : { opacity: 0, y: '110%', textShadow: '0 0 0 rgba(216, 121, 70, 0)' }}
+                    animate={{ opacity: 1, y: '0%', textShadow: reduceMotion ? '0 0 0 rgba(216, 121, 70, 0)' : ['0 0 0 rgba(216, 121, 70, 0)', '0 0 10px rgba(216, 121, 70, 0.24)'] }}
+                    whileHover={reduceMotion ? undefined : { y: -3, color: '#b95e32' }}
+                    transition={{ opacity: { duration: 0.55, delay: 0.05 }, y: { duration: 0.65, delay: 0.05, ease: [0.16, 1, 0.3, 1] }, textShadow: { duration: 2.8, delay: 0.85, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut' } }}
+                  >
+                    <motion.span className="block" animate={reduceMotion ? undefined : { y: [0, -2, 0] }} transition={{ duration: 2.2, delay: 0.8, repeat: Infinity, ease: 'easeInOut' }}>
+                      Spaces shaped by thought.
+                    </motion.span>
+                  </motion.span>
+                </span>
+                <span className="mt-1 block overflow-hidden pb-1">
+                  <motion.span
+                    className="block"
+                    initial={reduceMotion ? false : { opacity: 0, y: '110%', textShadow: '0 0 0 rgba(216, 121, 70, 0)' }}
+                    animate={{ opacity: 1, y: '0%', textShadow: reduceMotion ? '0 0 0 rgba(216, 121, 70, 0)' : ['0 0 0 rgba(216, 121, 70, 0)', '0 0 10px rgba(216, 121, 70, 0.24)'] }}
+                    whileHover={reduceMotion ? undefined : { y: -3, color: '#b95e32' }}
+                    transition={{ opacity: { duration: 0.55, delay: 0.22 }, y: { duration: 0.65, delay: 0.22, ease: [0.16, 1, 0.3, 1] }, textShadow: { duration: 2.8, delay: 1.02, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut' } }}
+                  >
+                    <motion.span className="block" animate={reduceMotion ? undefined : { y: [0, -2, 0] }} transition={{ duration: 2.2, delay: 1.02, repeat: Infinity, ease: 'easeInOut' }}>
+                      Defined by purpose.
+                    </motion.span>
+                  </motion.span>
+                </span>
+                <motion.span aria-hidden="true" className="mt-3 block h-0.5 w-full origin-left bg-[#d87946]" initial={reduceMotion ? false : { scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ duration: reduceMotion ? 0 : 1.1, delay: 0.15, ease: [0.22, 1, 0.3, 1] }} />
+              </h1>
+              <p className="mt-6 text-[0.68rem] font-medium uppercase tracking-[0.3em] text-black/50">
+                Architecture · Interior · Landscape
+              </p>
+            </>
+          )}
+        </div>
+        <div aria-hidden="true" className="mt-10 h-4" />
+        <div ref={timelineRef} className="relative mx-auto max-w-7xl">
             <svg
               className="pointer-events-none absolute inset-0 z-0 h-full w-full overflow-visible"
               viewBox={`0 0 ${timeline.width} ${timeline.height}`}
@@ -208,7 +287,7 @@ export default function Hero() {
               ))}
             </svg>
             <div className="space-y-4 pl-0 md:space-y-0">
-              {homeProjects.map((project, index) => (
+              {visibleProjects.map((project, index) => (
                 <ProjectShowcase
                   key={project.id}
                   title={project.name}
@@ -218,9 +297,12 @@ export default function Hero() {
                   images={project.cover_url ? [project.cover_url] : []}
                   index={index}
                   projectListAnchor={index === 0}
+                  initiallyVisible={index < 2}
+                  homeSize
                   project={project}
                 />
               ))}
+              <div ref={loadMoreRef} aria-hidden="true" className="h-px" />
             </div>
           </div>
       </div>

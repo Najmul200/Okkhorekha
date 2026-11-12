@@ -41,7 +41,7 @@ export default function CategoryPage() {
         </nav>
 
         <div className="mb-7">
-          <h1 className="font-display text-4xl font-medium leading-tight">{cat.status}s</h1>
+          <h1 className="font-display text-4xl font-medium leading-tight max-[700px]:text-3xl">{cat.status}s</h1>
           <p className="mt-2 text-sm text-muted">
             {cat.projects.length} {cat.projects.length === 1 ? 'project' : 'projects'}
           </p>

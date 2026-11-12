@@ -99,7 +99,7 @@ export default function Reviews({ projectId, projectTitle }) {
                   <button
                     type="button"
                     key={n}
-                    className={`inline-flex cursor-pointer items-center justify-center border-0 bg-transparent p-1 text-2xl transition-transform ${n <= rating ? 'scale-110 text-black' : 'text-neutral-400 hover:scale-110 hover:text-black'}`}
+                    className={`inline-flex h-11 w-11 cursor-pointer items-center justify-center border-0 bg-transparent p-1 text-2xl transition-transform active:scale-95 ${n <= rating ? 'scale-110 text-black' : 'text-neutral-400 hover:scale-110 hover:text-black'}`}
                     aria-label={`${n} star${n > 1 ? 's' : ''}`}
                     aria-pressed={rating === n}
                     onClick={() => setRating(n)}

@@ -11,6 +11,8 @@ export default function ProjectShowcase({
   index,
   sectionId,
   projectListAnchor = false,
+  homeSize = false,
+  initiallyVisible = false,
   id,
   project,
 }) {
@@ -187,7 +189,7 @@ export default function ProjectShowcase({
       data-timeline-gallery
       data-project-gallery
       data-gallery-index={index}
-      className="relative z-10 col-start-2 row-start-2 h-[clamp(17rem,85vw,25rem)] min-w-0 overflow-hidden rounded-xl bg-[#d7d7d7] md:col-span-2 md:col-start-2 md:h-120"
+      className={`relative z-10 col-start-2 row-start-2 ${homeSize ? 'h-[clamp(19rem,90vw,28rem)] md:h-[34rem]' : 'h-[clamp(17rem,85vw,25rem)] md:h-120'} min-w-0 overflow-hidden rounded-xl bg-[#d7d7d7] md:col-span-2 md:col-start-2`}
       onMouseEnter={() => setIsGalleryPaused(true)}
       onMouseLeave={() => setIsGalleryPaused(false)}
       onFocusCapture={() => setIsGalleryPaused(true)}
@@ -273,6 +275,7 @@ export default function ProjectShowcase({
       </div>
 
       <div className="pointer-events-none absolute inset-x-4 bottom-4 z-10 flex items-end justify-end gap-3 text-white md:inset-x-5 md:bottom-5">
+
         {galleryImages.length > 1 && (
           <span className="shrink-0 text-xs tabular-nums text-white/85">
             {String(activeImage + 1).padStart(2, '0')} / {String(galleryImages.length).padStart(2, '0')}
@@ -286,7 +289,7 @@ export default function ProjectShowcase({
             type="button"
             aria-label="Previous image"
             onClick={() => setActiveImage((current) => (current - 1 + galleryImages.length) % galleryImages.length)}
-            className="absolute left-3 top-1/2 z-20 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/60 bg-black/35 text-2xl text-white backdrop-blur-sm transition hover:bg-black/65 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            className="absolute left-3 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/60 bg-black/45 text-2xl text-white shadow-md backdrop-blur-sm transition hover:bg-black/70 active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
           >
             ‹
           </button>
@@ -294,11 +297,11 @@ export default function ProjectShowcase({
             type="button"
             aria-label="Next image"
             onClick={() => setActiveImage((current) => (current + 1) % galleryImages.length)}
-            className="absolute right-3 top-1/2 z-20 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/60 bg-black/35 text-2xl text-white backdrop-blur-sm transition hover:bg-black/65 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            className="absolute right-3 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/60 bg-black/45 text-2xl text-white shadow-md backdrop-blur-sm transition hover:bg-black/70 active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
           >
             ›
           </button>
-          <div className="absolute bottom-1.5 left-1/2 z-20 flex -translate-x-1/2 gap-1.5" aria-label="Choose project image">
+          <div className="absolute bottom-0.5 left-1/2 z-20 flex -translate-x-1/2 items-center gap-0.5" role="group" aria-label="Choose project image">
             {galleryImages.map((image, imageIndex) => (
               <button
                 key={image}
@@ -306,10 +309,12 @@ export default function ProjectShowcase({
                 aria-label={`Show image ${imageIndex + 1}`}
                 aria-current={activeImage === imageIndex ? 'true' : undefined}
                 onClick={() => setActiveImage(imageIndex)}
-                className={`h-1.5 rounded-full transition-all ${
-                  activeImage === imageIndex ? 'w-5 bg-white' : 'w-1.5 bg-white/60 hover:bg-white'
-                }`}
-              />
+                className="group flex h-9 w-8 items-center justify-center rounded-full focus-visible:outline-2 focus-visible:outline-white"
+              >
+                <span className={`block h-1.5 rounded-full transition-all ${
+                  activeImage === imageIndex ? 'w-5 bg-white' : 'w-1.5 bg-white/70 group-hover:bg-white'
+                }`} />
+              </button>
             ))}
           </div>
         </>
@@ -321,8 +326,9 @@ export default function ProjectShowcase({
     <motion.div
       id={projectListAnchor ? 'projects' : undefined}
       className={projectListAnchor ? 'scroll-mt-28' : undefined}
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={initiallyVisible ? false : { opacity: 0, y: 50 }}
+      animate={initiallyVisible ? { opacity: 1, y: 0 } : undefined}
+      whileInView={initiallyVisible ? undefined : { opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
       onAnimationComplete={() => window.dispatchEvent(new Event('project-reveal-complete'))}
@@ -335,7 +341,7 @@ export default function ProjectShowcase({
         {content}
         {gallery}
         {location && (
-          <p className="col-start-2 col-end-3 row-start-3 mt-3 w-full min-w-0 text-xs font-medium uppercase tracking-[0.15em] text-black md:col-end-4">
+          <p className="col-start-2 col-end-3 row-start-3 mt-3 w-full min-w-0 text-xs font-normal uppercase tracking-[0.15em] text-black/60 md:col-end-4">
             {location}
           </p>
         )}
@@ -345,9 +351,9 @@ export default function ProjectShowcase({
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.6, ease: 'easeOut' }}
-            className="col-start-2 col-end-3 row-start-4 mt-2 w-full min-w-0 pb-2 md:col-end-4"
+            className="col-start-2 row-start-4 mt-2 w-full min-w-0 max-w-none pb-2 md:col-end-4"
           >
-            <p data-timeline-description className="w-full text-sm leading-7 text-black/60">
+            <p data-timeline-description className="w-full text-justify text-sm leading-7 text-black/60 [text-align-last:left]">
               {description}
             </p>
           </motion.div>
@@ -392,7 +398,7 @@ export default function ProjectShowcase({
               className="max-h-[78vh] w-full rounded-md object-contain"
             />
             <figcaption className="text-center text-sm text-white/75">
-              {title} · {location}
+              {title}
               <span className="mx-2 text-white/40">|</span>
               {String(lightboxIndex + 1).padStart(2, '0')} / {String(galleryImages.length).padStart(2, '0')}
             </figcaption>

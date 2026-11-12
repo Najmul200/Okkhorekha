@@ -45,8 +45,8 @@ export default function AdminDashboard() {
   // --- 1. LOGIN SCREEN ---
   if (!session) {
     return (
-      <div className="admin-login" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', background: '#fff8f2', fontFamily: '"Montserrat", "Noto Sans Bengali", sans-serif' }}>
-        <form className="admin-login-form" onSubmit={handleLogin} style={{ background: '#faf9f7', padding: '40px', borderRadius: '8px', width: '100%', maxWidth: '380px', display: 'flex', flexDirection: 'column', gap: '20px', border: '1px solid #efdccf' }}>
+      <div className="admin-login" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', background: '#c9c9c9', fontFamily: '"Montserrat", "Noto Sans Bengali", sans-serif' }}>
+        <form className="admin-login-form" onSubmit={handleLogin} style={{ background: '#e0e0e0', padding: '40px', borderRadius: '8px', width: '100%', maxWidth: '380px', display: 'flex', flexDirection: 'column', gap: '20px', border: '1px solid #efdccf' }}>
           <h2 style={{ textAlign: 'center', letterSpacing: '2px', textTransform: 'uppercase', fontSize: '20px', margin: '0 0 10px 0', color: '#333' }}>Admin Login</h2>
           
           <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
@@ -87,9 +87,9 @@ export default function AdminDashboard() {
   const menuItems = ['Overview', 'Projects', 'About Us', 'Collections', 'People', 'Journal', 'Inbox', 'Analytics', 'Services', 'FAQs', 'Settings'];
 
   return (
-    <div className="admin-dashboard" style={{ display: 'flex', height: '100vh', background: '#fff8f2', fontFamily: '"Montserrat", "Noto Sans Bengali", sans-serif', overflow: 'hidden' }}>
+    <div className="admin-dashboard" style={{ display: 'flex', height: '100vh', background: '#c9c9c9', fontFamily: '"Montserrat", "Noto Sans Bengali", sans-serif', overflow: 'hidden' }}>
       {/* Sidebar */}
-      <div className="admin-sidebar" style={{ width: '240px', borderRight: '1px solid #efdccf', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '30px 20px', background: '#faf9f7' }}>
+      <div className="admin-sidebar" style={{ width: '240px', borderRight: '1px solid #efdccf', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '30px 20px', background: '#e0e0e0' }}>
         <div>
           <div className="admin-brand" style={{ marginBottom: '40px' }}>
             <h2 style={{ fontSize: '18px', letterSpacing: '2px', margin: '0 0 5px 0', fontWeight: '900', color: '#111' }}>Akkhorekha Architects</h2>
@@ -136,7 +136,7 @@ export default function AdminDashboard() {
       </div>
 
       {/* Main Content Area */}
-      <div className="admin-main" style={{ flex: 1, padding: '40px 50px', overflowY: 'auto', background: '#fff8f2' }}>
+      <div className="admin-main" style={{ flex: 1, padding: '40px 50px', overflowY: 'auto', background: '#c9c9c9' }}>
         {activeTab === 'inbox' ? (
           <Inbox />
         ) : activeTab === 'about us' ? (

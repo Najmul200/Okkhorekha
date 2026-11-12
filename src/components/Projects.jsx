@@ -28,7 +28,7 @@ const hasProjects = categoryProjects.length > 0;
             <div className="flex min-w-0 w-full flex-col items-stretch" key={c.key} data-reveal>
               <div className="mb-2 self-start text-xs font-bold uppercase tracking-[0.12em] text-ink">{c.status}</div>
               <Link
-                className="group relative isolate block aspect-5/4 w-full overflow-hidden rounded-md border border-white/20 bg-black text-white shadow-lg transition-[transform,box-shadow,border-color] duration-500 ease-out hover:-translate-y-2 hover:border-white/70 hover:shadow-[0_28px_64px_rgba(0,0,0,0.35)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-black max-[700px]:aspect-4/3 max-[700px]:rounded"
+                className="group relative isolate block aspect-5/4 w-full overflow-hidden rounded-md border border-white/20 bg-black text-white shadow-lg transition-[transform,box-shadow,border-color] duration-500 ease-out hover:-translate-y-2 hover:border-white/70 hover:shadow-[0_28px_64px_rgba(0,0,0,0.35)] active:scale-[0.99] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-black max-[700px]:aspect-4/3 max-[700px]:rounded"
                 to={categoryPath(c)}
                 aria-label={`View ${c.status.toLowerCase()}${c.projects.length ? 's' : ', coming soon'}`}
               >

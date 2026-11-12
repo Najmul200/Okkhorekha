@@ -1,8 +1,8 @@
 export const SITE = {
   name: 'অক্ষরেখা',
-  phone: '01774750911',
-  phoneHref: '+8801774750911',
-  whatsapp: '01774750911',
+  phone: '01750052585',
+  phoneHref: 'tel:+8801750052585',
+  whatsapp: '01750052585',
   email: 'akkhorekhaarchitects@gmail.com',
 };
 

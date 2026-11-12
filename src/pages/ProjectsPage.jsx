@@ -47,7 +47,7 @@ export default function ProjectsPage() {
   return (
     <main className="min-h-[60vh] bg-paper text-[#111]">
       <div className="mx-auto w-[min(1240px,calc(100%-3rem))] pb-14 pt-10 max-[700px]:w-[calc(100%-1.5rem)] max-[700px]:pb-10 max-[700px]:pt-8">
-        <nav className="mb-8 flex gap-2 text-sm text-muted" aria-label="Breadcrumb">
+        <nav className="mb-8 flex flex-wrap gap-2 text-sm text-muted" aria-label="Breadcrumb">
           <Link className="hover:text-black hover:underline" to="/">Home</Link>
           <span>/</span>
           <span aria-current="page">Projects</span>
@@ -79,7 +79,7 @@ export default function ProjectsPage() {
                 </span>
                 <h2
                   id={`project-${group.key}-title`}
-                  className="mt-2 font-display text-3xl font-medium md:text-4xl"
+                  className="mt-2 wrap-anywhere font-display text-3xl font-medium max-[380px]:text-2xl md:text-4xl"
                 >
                   {group.label}
                 </h2>
