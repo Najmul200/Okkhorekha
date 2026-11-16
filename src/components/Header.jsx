@@ -103,7 +103,7 @@ export default function Header() {
                 <motion.img
                   src="/images/AKKHOREKHA.png"
                   alt={SITE.name}
-                  className="relative z-10 block h-19.5 w-auto max-w-70 object-contain max-[960px]:h-15 max-[960px]:max-w-55 max-[360px]:h-13"
+                  className="relative z-10 block h-19.5 w-auto max-w-70 object-contain max-[960px]:h-15 max-[960px]:max-w-55 max-[360px]:h-13 max-[360px]:max-w-[min(52vw,13rem)]"
                   initial={reduceMotion ? false : { opacity: 0.12, y: 3, filter: 'blur(3px)' }}
                   animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                   transition={{

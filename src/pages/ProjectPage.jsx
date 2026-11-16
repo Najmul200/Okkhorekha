@@ -52,7 +52,7 @@ export default function ProjectPage() {
           <span>/</span>
           <Link className="hover:text-black hover:underline" to={categoryPath(cat)}>{cat.status}</Link>
           <span>/</span>
-          <span>{project.title}</span>
+          <span className="min-w-0 wrap-anywhere">{project.title}</span>
         </nav>
 
         <div className="mb-7" data-reveal>
@@ -114,17 +114,17 @@ export default function ProjectPage() {
 
         <div className="mt-10 flex flex-wrap items-center justify-between gap-4 border-t border-black/15 pt-6" data-reveal>
           {prev ? (
-            <Link to={projectPath(cat, prev)} className="inline-flex items-center justify-center gap-2 rounded-sm border border-black/25 px-5 py-3 text-sm font-semibold text-ink transition-all hover:-translate-y-0.5 hover:border-black hover:shadow-md">
+            <Link to={projectPath(cat, prev)} className="inline-flex min-w-0 max-w-full wrap-anywhere items-center justify-center gap-2 rounded-sm border border-black/25 px-5 py-3 text-center text-sm font-semibold text-ink transition-all hover:-translate-y-0.5 hover:border-black hover:shadow-md">
               ← {prev.title}
             </Link>
           ) : (
             <span />
           )}
-          <Link to={categoryPath(cat)} className="inline-flex items-center justify-center gap-2 rounded-sm border border-black/25 px-5 py-3 text-sm font-semibold text-ink transition-all hover:-translate-y-0.5 hover:border-black hover:shadow-md">
+          <Link to={categoryPath(cat)} className="inline-flex min-w-0 max-w-full wrap-anywhere items-center justify-center gap-2 rounded-sm border border-black/25 px-5 py-3 text-center text-sm font-semibold text-ink transition-all hover:-translate-y-0.5 hover:border-black hover:shadow-md">
             All {cat.status}s
           </Link>
           {next ? (
-            <Link to={projectPath(cat, next)} className="inline-flex items-center justify-center gap-2 rounded-sm border border-black bg-black px-5 py-3 text-sm font-bold text-white transition-all hover:-translate-y-0.5 hover:shadow-md">
+            <Link to={projectPath(cat, next)} className="inline-flex min-w-0 max-w-full wrap-anywhere items-center justify-center gap-2 rounded-sm border border-black bg-black px-5 py-3 text-center text-sm font-bold text-white transition-all hover:-translate-y-0.5 hover:shadow-md">
               {next.title} →
             </Link>
           ) : (

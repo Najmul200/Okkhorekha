@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import useSeo from '../hooks/useSeo.js';
 import useAboutContent from '../hooks/useAboutContent.js';
+import { DEFAULT_ABOUT_IMAGE } from '../data/aboutContent.js';
 
 export default function AboutPage() {
   useSeo({
@@ -16,13 +17,18 @@ export default function AboutPage() {
       <div className="mx-auto w-[min(1280px,calc(100%-3rem))] max-[700px]:w-[calc(100%-2rem)] max-[360px]:w-[calc(100%-1.5rem)]">
         <header className="max-w-4xl py-10 max-[700px]:py-5" data-reveal>
           <span className="text-xs font-bold uppercase tracking-[0.13em] text-ink">{content.pageEyebrow}</span>
-          <h1 className="my-3 max-w-3xl font-display text-5xl font-medium leading-tight max-[700px]:text-4xl">{content.pageTitle}</h1>
+          <h1 className="my-3 max-w-3xl wrap-anywhere font-display text-5xl font-medium leading-tight max-[700px]:text-4xl">{content.pageTitle}</h1>
           <p className="max-w-2xl text-lg text-muted">{content.pageIntro}</p>
         </header>
 
         <div className="grid grid-cols-[1.05fr_0.95fr] items-center gap-12 pb-16 pt-4 max-[900px]:gap-8 max-[700px]:grid-cols-1 max-[700px]:gap-6 max-[700px]:pb-10" data-reveal>
           <img
             src={content.imageUrl}
+            onError={(event) => {
+              if (event.currentTarget.src !== new URL(DEFAULT_ABOUT_IMAGE, window.location.href).href) {
+                event.currentTarget.src = DEFAULT_ABOUT_IMAGE;
+              }
+            }}
             alt="A completed architecture and interior project from the studio"
             loading="lazy"
             decoding="async"

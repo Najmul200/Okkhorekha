@@ -1,4 +1,7 @@
 import { STATS } from './content.js';
+import aboutStudioImage from '../assets/projects/Ready Project/bashundhara/Scene 24.png';
+
+export const DEFAULT_ABOUT_IMAGE = aboutStudioImage;
 
 export const DEFAULT_ABOUT_CONTENT = {
   homeTitle: 'About the Studio',
@@ -28,5 +31,5 @@ export const DEFAULT_ABOUT_CONTENT = {
     { title: 'Planning', text: 'Clear spatial strategies that connect people, place, and purpose.' },
   ],
   stats: STATS,
-  imageUrl: '/images/Scene 24_1.png',
+  imageUrl: DEFAULT_ABOUT_IMAGE,
 };

@@ -169,7 +169,7 @@ export default function Contact() {
               <li className="my-3 text-muted">
                 <strong>Email</strong>
                 <br />
-                <a href={`mailto:${SITE.email}`}>
+                <a className="break-all" href={`mailto:${SITE.email}`}>
                   {SITE.email}
                 </a>
               </li>

@@ -1,5 +1,15 @@
 @import "tailwindcss";
 
+.project-description {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-weight: 400;
+}
+
+.project-heading-bengali {
+  font-family: "Noto Sans Bengali", sans-serif;
+  font-weight: 400;
+}
+
 @theme {
   --color-paper: #c9c9c9;
   --color-surface: #e0e0e0;

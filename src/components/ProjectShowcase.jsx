@@ -161,7 +161,11 @@ export default function ProjectShowcase({
       <h2 className={`min-w-0 wrap-anywhere text-2xl font-normal tracking-[-0.04em] text-black md:text-3xl ${
         contentOnLeft ? 'order-2' : 'order-1'
       }`}>
-        {title}
+        {String(title).split(/([\u0980-\u09FF]+)/g).map((part, partIndex) =>
+          /[\u0980-\u09FF]/.test(part)
+            ? <span className="project-heading-bengali" key={`title-part-${partIndex}`}>{part}</span>
+            : part
+        )}
       </h2>
     </motion.div>
   );
@@ -353,7 +357,7 @@ export default function ProjectShowcase({
             transition={{ duration: 0.6, ease: 'easeOut' }}
             className="col-start-2 row-start-4 mt-2 w-full min-w-0 max-w-none pb-2 md:col-end-4"
           >
-            <p data-timeline-description className="w-full text-justify text-sm leading-7 text-black/60 [text-align-last:left]">
+            <p data-timeline-description className="project-description w-full text-justify text-sm leading-7 text-black [text-align-last:left]">
               {description}
             </p>
           </motion.div>

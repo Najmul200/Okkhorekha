@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { FaFacebookF, FaInstagram, FaBehance, FaWhatsapp } from 'react-icons/fa';
+import { FaFacebookF, FaInstagram, FaBehance, FaWhatsapp, FaYoutube } from 'react-icons/fa';
 import { SITE } from '../data/content.js';
 
 export default function Footer() {
@@ -25,8 +25,8 @@ export default function Footer() {
             <h3 className="mb-3 font-display text-base font-medium text-white">Contact</h3>
             <p className="mb-2 block text-white/70">{SITE.address}</p>
             <a className="mb-2 block text-white/70 transition-colors hover:text-white hover:underline" href={SITE.phoneHref}>{SITE.phone}</a>
-            <a className="mb-2 block text-white/70 transition-colors hover:text-white hover:underline" href={`mailto:${SITE.email}`}>{SITE.email}</a>
-            <div className="mt-5 flex items-center gap-4">
+            <a className="mb-2 block break-all text-white/70 transition-colors hover:text-white hover:underline" href={`mailto:${SITE.email}`}>{SITE.email}</a>
+            <div className="mt-5 flex flex-wrap items-center gap-3 sm:gap-4">
               <a
                 href="https://www.facebook.com/akkhorekhaarchitects"
                 target="_blank"
@@ -62,6 +62,15 @@ export default function Footer() {
                 className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#d87946] text-lg text-[#d87946] transition-colors hover:bg-[#d87946] hover:text-white"
               >
                 <FaWhatsapp aria-hidden="true" />
+              </a>
+              <a
+                href="https://www.youtube.com/@AkkhorekhaArchitect"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Akkhorekha Architects on YouTube"
+                className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#d87946] text-lg text-[#d87946] transition-colors hover:bg-[#d87946] hover:text-white"
+              >
+                <FaYoutube aria-hidden="true" />
               </a>
             </div>
           </div>

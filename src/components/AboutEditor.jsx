@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { DEFAULT_ABOUT_CONTENT } from '../data/aboutContent.js';
+import { DEFAULT_ABOUT_CONTENT, DEFAULT_ABOUT_IMAGE } from '../data/aboutContent.js';
 import { supabase } from '../lib/supabase';
 
 const textFields = [
@@ -82,7 +82,15 @@ export default function AboutEditor() {
       if (error) throw error;
 
       const { data } = supabase.storage.from('project-images').getPublicUrl(filePath);
-      updateContent('imageUrl', data.publicUrl);
+      const updatedContent = { ...content, imageUrl: data.publicUrl };
+      const { error: saveError } = await supabase.from('about_content').upsert({
+        id: 'about',
+        content: updatedContent,
+        updated_at: new Date().toISOString(),
+      });
+      if (saveError) throw saveError;
+      setContent(updatedContent);
+      setSuccessMessage('Image uploaded and published to the About Us page.');
     } catch (error) {
       setErrorMessage(`Image upload failed: ${error.message}`);
     } finally {
@@ -97,15 +105,20 @@ export default function AboutEditor() {
     setErrorMessage('');
     setSuccessMessage('');
 
-    const { error } = await supabase.from('about_content').upsert({
-      id: 'about',
-      content,
-      updated_at: new Date().toISOString(),
-    });
+    try {
+      const { error } = await supabase.from('about_content').upsert({
+        id: 'about',
+        content,
+        updated_at: new Date().toISOString(),
+      });
 
-    if (error) setErrorMessage(`Could not save About Us content: ${error.message}`);
-    else setSuccessMessage('About Us content saved and published.');
-    setSaving(false);
+      if (error) throw error;
+      setSuccessMessage('About Us content saved and published.');
+    } catch (error) {
+      setErrorMessage(`Could not save About Us content: ${error.message}`);
+    } finally {
+      setSaving(false);
+    }
   };
 
   const updateListItem = (key, index, field, value) => {
@@ -139,7 +152,7 @@ export default function AboutEditor() {
       <div className="space-y-8">
         <section className="space-y-4 border-t border-gray-200 pt-6">
           <h2 className="text-lg font-semibold text-gray-900">Studio image</h2>
-          {content.imageUrl && <img src={content.imageUrl} alt="About studio preview" className="h-48 w-full max-w-md rounded object-cover" />}
+          {content.imageUrl && <img src={content.imageUrl} onError={(event) => { if (event.currentTarget.src !== new URL(DEFAULT_ABOUT_IMAGE, window.location.href).href) event.currentTarget.src = DEFAULT_ABOUT_IMAGE; }} alt="About studio preview" className="h-48 w-full max-w-md rounded object-cover" />}
           <div className="flex flex-wrap items-center gap-3">
             <label className="cursor-pointer rounded border border-[#c65f20] px-4 py-2 text-xs font-bold text-[#c65f20]">
               {uploading ? 'UPLOADING...' : 'UPLOAD IMAGE'}
